@@ -73,4 +73,3 @@ class  CoinToMint():
 	cmd = models.AutoField(primary_key=True)
 	coin = models.ForeignKey('Coins')
 	mint = models.ForeignKey('Mints')
-		
