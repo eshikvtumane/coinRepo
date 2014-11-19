@@ -25,8 +25,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Series',
             fields=[
-                ('series', models.AutoField(serialize=False, primary_key=True)),
-                ('series_name', models.CharField(max_length=1000)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('series_name', models.CharField(max_length=100000)),
                 ('country', models.ForeignKey(to='coins.Countries')),
             ],
             options={

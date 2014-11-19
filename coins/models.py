@@ -19,7 +19,7 @@ class Series(models.Model):
 	class Meta:
 		db_table = 'Series' # name table in DB
 
-	series = models.AutoField(primary_key=True) # id
+	#series = models.AutoField(primary_key=True) # id
 	country = models.ForeignKey('Countries')
 	series_name = models.CharField(max_length=100000)
 
@@ -27,7 +27,7 @@ class Metals():
 	class Meta():
 		db_table = 'Metals'
 
-	metal = models.AutoField(primary_key=True)
+	#metal = models.AutoField(primary_key=True)
 	metal_description = models.CharField()
 
 
@@ -35,22 +35,33 @@ class Mints():
 	class Meta():
 		db_table = 'Mints'
 
-	mint = models.AutoField(primary_key=True)
+	#mint = models.AutoField(primary_key=True)
 	country = models.ForeignKey('Countries')
 	mint_name = models.CharField()
 	mint_abbreviation = models.CharField(max_length=10)
+
+
+class Denominals():
+	''' "ruble, dollar" for example ''' 
+	class Meta():
+		db_table = 'Denominals'
+
+	denominal_name = models.CharField()
+	country_denominal = models.ForeignKey('Countries')
 
 
 class Coins():
 	class Meta():
 		db_table = 'Coins' # name table in DB
 
-	coin = models.AutoField(primary_key=True) # id
+	#coin = models.AutoField(primary_key=True) # id
 	country = models.ForeignKey('Countries')
 	series = models.ForeignKey('Series')
 	metal_coin = models.ForeignKey('Metals')
 
 	denominal_coin = models.IntegerField()
+	denominal_name = models.ForeignKey('Denominals')
+
 	manufacture_date = models.DateField()
 	circulation_coin = models.BigIntegerField()
 	weight_coin = models.FloatField()
@@ -70,6 +81,9 @@ class  CoinToMint():
 	class Meta():
 		db_table = 'CoinToMint'
 
-	cmd = models.AutoField(primary_key=True)
+	#cmd = models.AutoField(primary_key=True)
 	coin = models.ForeignKey('Coins')
 	mint = models.ForeignKey('Mints')
+
+
+
