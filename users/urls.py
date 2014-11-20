@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     # url(r'^$', 'coins_site.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-    url(r'^user/', RegistrationForm.as_view()),
+    url(r'^register/$', RegistrationForm.as_view()),
 )
