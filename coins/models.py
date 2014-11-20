@@ -32,7 +32,7 @@ class Metals():
 
 
 class Mints():
-	class Meta():
+	class Meta:
 		db_table = 'Mints'
 
 	#mint = models.AutoField(primary_key=True)
@@ -43,7 +43,7 @@ class Mints():
 
 class Denominals():
 	''' "ruble, dollar" for example ''' 
-	class Meta():
+	class Meta:
 		db_table = 'Denominals'
 
 	denominal_name = models.CharField()
@@ -51,7 +51,7 @@ class Denominals():
 
 
 class Coins():
-	class Meta():
+	class Meta:
 		db_table = 'Coins' # name table in DB
 
 	#coin = models.AutoField(primary_key=True) # id
@@ -78,7 +78,7 @@ class Coins():
 
 
 class  CoinToMint():
-	class Meta():
+	class Meta:
 		db_table = 'CoinToMint'
 
 	#cmd = models.AutoField(primary_key=True)
