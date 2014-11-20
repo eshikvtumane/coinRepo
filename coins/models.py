@@ -23,34 +23,34 @@ class Series(models.Model):
 	country = models.ForeignKey('Countries')
 	series_name = models.CharField(max_length=100000)
 
-class Metals():
+class Metals(models.Model):
 	class Meta():
 		db_table = 'Metals'
 
 	#metal = models.AutoField(primary_key=True)
-	metal_description = models.CharField()
+	metal_description = models.CharField(max_length='10000')
 
 
-class Mints():
+class Mints(models.Model):
 	class Meta:
 		db_table = 'Mints'
 
 	#mint = models.AutoField(primary_key=True)
 	country = models.ForeignKey('Countries')
-	mint_name = models.CharField()
+	mint_name = models.CharField(max_length='200')
 	mint_abbreviation = models.CharField(max_length=10)
 
 
-class Denominals():
+class Denominals(models.Model):
 	''' "ruble, dollar" for example ''' 
 	class Meta:
 		db_table = 'Denominals'
 
-	denominal_name = models.CharField()
+	denominal_name = models.CharField(max_length='50')
 	country_denominal = models.ForeignKey('Countries')
 
 
-class Coins():
+class Coins(models.Model):
 	class Meta:
 		db_table = 'Coins' # name table in DB
 
@@ -67,17 +67,17 @@ class Coins():
 	weight_coin = models.FloatField()
 	diametr_coin = models.FloatField()
 	thickness_coins = models.FloatField()
-	painter = models.CharField()
-	sculptor = models.CharField()
-	herd_coin = models.CharField() # edge of a coin http://tinyurl.com/m56ms6y
-	description = models.CharField()
+	painter = models.CharField(max_length='100')
+	sculptor = models.CharField(max_length='100')
+	herd_coin = models.CharField(max_length='10000') # edge of a coin http://tinyurl.com/m56ms6y
+	description = models.CharField(max_length='1000000')
 	item_number = models.CharField(max_length=9) # http://tinyurl.com/kbh5fly
 	photo_obverse = models.ImageField()
 	photo_reverse = models.ImageField()
 	link_cbr = models.URLField() # link on description coin on site Central Bank of Russia
 
 
-class  CoinToMint():
+class  CoinToMint(models.Model):
 	class Meta:
 		db_table = 'CoinToMint'
 

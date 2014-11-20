@@ -13,6 +13,12 @@ class RegistrationForm(TemplateView):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/index.html')
+        else:
+            args = {}
+            args.update(csrf(request))
+
+            args['form'] = RegisterForm()
+            return render_to_response('register.html', args)
 
     def get(self, request):
         args = {}
