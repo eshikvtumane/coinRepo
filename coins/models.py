@@ -59,8 +59,8 @@ class Coins(models.Model):
 	series = models.ForeignKey('Series')
 	coin_metal = models.ForeignKey('Metals')
 
-	denominal_coin = models.IntegerField()
-	denominal_name = models.ForeignKey('Denominals')
+	rate = models.IntegerField() #coin rating
+	denominal_name = models.ForeignKey('Denominals') #currency
 
 	manufacture_date = models.DateField()
 	coin_circulation = models.BigIntegerField()
@@ -75,6 +75,8 @@ class Coins(models.Model):
 	photo_obverse = models.ImageField()
 	photo_reverse = models.ImageField()
 	link_cbr = models.URLField() # link on description coin on site Central Bank of Russia
+
+
 
 
 class  CoinToMint(models.Model):
