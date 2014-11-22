@@ -48,3 +48,11 @@ class RegisterForm(UserCreationForm):
             'email': _('E-mail'),
             #'full_name': _(u'Фамилия и имя'),
         }'''
+
+class AuthForm(forms.Form):
+    username = forms.RegexField(label=_(u'Логин'), required=True, max_length=30, regex=r'^[\w.@+-]+$',
+                                error_messages = {'invalid': _(u"Вводите только буквы и числа."),
+                                                  'required': _(u'Обязательное поле')})
+    password = forms.CharField(label=_(u'Пароль'),
+                                widget=forms.PasswordInput,
+                                error_messages={'required': _(u'Обязательное поле')})

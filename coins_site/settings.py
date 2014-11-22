@@ -28,6 +28,7 @@ ALLOWED_HOSTS = []
 
 TEMPLATE_DIRS = (
     BASE_DIR + '/users/templates/',
+    os.path.join(BASE_DIR, '/users/templates/auth'),
 )
 
 # Application definition

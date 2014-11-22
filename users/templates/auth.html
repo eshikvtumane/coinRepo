@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %}Вход в систему{% endblock %}
+{% block content%}
+    <h1>Вход в систему</h1>
+    {{ error }}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form|bootstrap }}
+
+        <input type="submit" value="Войти" class="btn btn-default">
+    </form>
+{% endblock %}
