@@ -8,7 +8,7 @@ class Countries(models.Model):
 	class Meta:
 		db_table = 'Countries' # name table in DB
 
-	country = models.AutoField(primary_key=True) # id
+	#id = models.AutoField(primary_key=True) # id
 	country_name = models.CharField(max_length=200)
 	country_flag = models.ImageField() # Image flag for country 
 
@@ -47,7 +47,7 @@ class Denominals(models.Model):
 		db_table = 'Denominals'
 
 	denominal_name = models.CharField(max_length='50')
-	country_denominal = models.ForeignKey('Countries')
+	denominal_country = models.ForeignKey('Countries')
 
 
 class Coins(models.Model):
@@ -57,19 +57,19 @@ class Coins(models.Model):
 	#coin = models.AutoField(primary_key=True) # id
 	country = models.ForeignKey('Countries')
 	series = models.ForeignKey('Series')
-	metal_coin = models.ForeignKey('Metals')
+	coin_metal = models.ForeignKey('Metals')
 
-	denominal_coin = models.IntegerField()
-	denominal_name = models.ForeignKey('Denominals')
+	rate = models.IntegerField() #coin rating
+	denominal_name = models.ForeignKey('Denominals') #currency
 
 	manufacture_date = models.DateField()
-	circulation_coin = models.BigIntegerField()
-	weight_coin = models.FloatField()
-	diametr_coin = models.FloatField()
-	thickness_coins = models.FloatField()
+	coin_circulation = models.BigIntegerField()
+	coin_weight = models.FloatField()
+	coin_diameter = models.FloatField()
+	coin_thickness = models.FloatField()
+	coin_herd = models.CharField(max_length='255') # edge of a coin http://tinyurl.com/m56ms6y
 	painter = models.CharField(max_length='255')
 	sculptor = models.CharField(max_length='255')
-	herd_coin = models.CharField(max_length='255') # edge of a coin http://tinyurl.com/m56ms6y
 	description = models.CharField(max_length='255')
 	item_number = models.CharField(max_length=9) # http://tinyurl.com/kbh5fly
 	photo_obverse = models.ImageField()
