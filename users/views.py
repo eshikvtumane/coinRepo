@@ -56,3 +56,8 @@ class UserAuth(View):
         args['error'] = error
 
         return render_to_response('auth.html', args)
+
+class UserLogout(View):
+    def get(self, request):
+        auth.logout(request)
+        return HttpResponseRedirect('../../coins')

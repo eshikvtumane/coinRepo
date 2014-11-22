@@ -27,7 +27,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
               {% if user.is_authenticated %}
-                <li><a href="">Выход</a></li>
+                <li><a href="/user/logout">Выход</a></li>
               {% else %}
                 <li><a href="/user/authentication">Войти</a></li>
                 <li><a href="/user/register">Регистрация</a></li>
