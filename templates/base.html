@@ -4,7 +4,9 @@
 <head lang="en">
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
     <meta charset="UTF-8">
-    <title></title>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- <link rel="stylesheet" type="text/css" href="http://yastatic.net/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+    <!--<script type="text/js" src=http://yastatic.net/bootstrap/3.1.1/js/bootstrap.min.js></script> -->
 </head>
 <body>
 
@@ -24,6 +26,7 @@
             <li class="active"><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
+              <li><a href="/user/register">Регистрация</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -36,7 +39,11 @@
         <p class="lead">Сайт для монет, короче.</p>
       </div>
 
+        {% block content %}
+        {% endblock %}
+
     </div><!-- /.container -->
+
 
 </body>
 </html>
