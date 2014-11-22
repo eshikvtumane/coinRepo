@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
@@ -7,22 +7,25 @@ from forms import RegisterForm
 
 # Create your views here.
 
-class RegistrationForm(TemplateView):
+class RegistrationForm(View):
+
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/index.html')
+            user = form.save()
+            return render_to_response('register_success.html')
+            #return HttpResponseRedirect('../../coins/')
         else:
-            args = {}
-            args.update(csrf(request))
-
-            args['form'] = RegisterForm()
-            return render_to_response('register.html', args)
+            return self.registerPage(request, form)
 
     def get(self, request):
+        form = RegisterForm()
+        return self.registerPage(request, form)
+
+    def registerPage(self, request, form):
         args = {}
         args.update(csrf(request))
 
-        args['form'] = RegisterForm()
+        args['form'] = form
         return render_to_response('register.html', args)
+
