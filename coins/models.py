@@ -4,24 +4,28 @@ from django.db import models
 
 
 class Countries(models.Model):
-	'''Table for store name countries'''
-	class Meta:
-		db_table = 'Countries' # name table in DB
+    '''Table for store name countries'''
+    class Meta:
+        db_table = 'Countries' #
 
-	#id = models.AutoField(primary_key=True) # id
-	country_name = models.CharField(max_length=200)
-	country_flag = models.ImageField() # Image flag for country 
-
+    #id = models.AutoField(primary_key=True)
+    country_name = models.CharField(max_length=200)
+    country_flag = models.ImageField()
+    def __str__(self):
+        return self.country_name
 
 # http://tinyurl.com/pbbzjv7 - link to Wikipedia, paragraph 3.
 class Series(models.Model):
-	'''Table with names series coins '''
-	class Meta:
-		db_table = 'Series' # name table in DB
+    '''Table with names series coins '''
+    class Meta:
+        db_table = 'Series' # name table in DB
 
-	#series = models.AutoField(primary_key=True) # id
-	country = models.ForeignKey('Countries')
-	series_name = models.CharField(max_length=100000)
+    #series = models.AutoField(primary_key=True) # id
+    country = models.ForeignKey('Countries')
+    series_name = models.CharField(max_length=100000)
+
+    def __str__(self):
+        return self.series_name
 
 class Metals(models.Model):
 	class Meta():
@@ -32,13 +36,17 @@ class Metals(models.Model):
 
 
 class Mints(models.Model):
-	class Meta:
-		db_table = 'Mints'
+    class Meta:
+        db_table = 'Mints'
 
-	#mint = models.AutoField(primary_key=True)
-	country = models.ForeignKey('Countries')
-	mint_name = models.CharField(max_length='200')
-	mint_abbreviation = models.CharField(max_length=10)
+    #mint = models.AutoField(primary_key=True)
+    country = models.ForeignKey('Countries')
+    mint_name = models.CharField(max_length='200')
+    mint_abbreviation = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.mint_abbreviation
+
 
 
 class Denominals(models.Model):

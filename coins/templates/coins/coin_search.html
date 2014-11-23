@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block main_content %}
+    <form>
+    <select>
+    {% for country in countries %}
+        <option>{{country.country_name}}</option>
+
+    {% endfor %}
+     </select>
+    </form>
+
+{% endblock %}
+

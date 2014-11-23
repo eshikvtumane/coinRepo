@@ -3,6 +3,10 @@
 <html>
 <head lang="en">
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+    <script type="text/javascript" src="{% static 'jquery-2.1.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap.js' %}"></script>
+
     <meta charset="UTF-8">
     <title></title>
 </head>
@@ -32,11 +36,12 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Сайт для монет, короче.</p>
+      {% block main_content %}
+      {% endblock %}
       </div>
 
     </div><!-- /.container -->
+
 
 </body>
 </html>
