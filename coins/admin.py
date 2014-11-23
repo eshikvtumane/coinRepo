@@ -9,7 +9,7 @@ class SeriesAdmin(admin.ModelAdmin):
     fields = ["series_name","country"]
 
 class CoinsAdmin(admin.ModelAdmin):
-    fields = ["country","series","coin_metal","denominal_coin","denominal_name","manufacture_date","coin_circulation",
+    fields = ["country","series","coin_metal","rate","denominal_name","manufacture_date","coin_circulation",
              "coin_weight","coin_diameter","coin_thickness","painter","sculptor","coin_herd","description","item_number",
               "photo_obverse","photo_reverse","link_cbr"]
 
