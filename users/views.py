@@ -1,28 +1,63 @@
-from django.views.generic import TemplateView
+#-*- coding: utf-8 -*-
+from django.views.generic import TemplateView, View
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
+from django.contrib import auth
 from django.core.context_processors import csrf
-from forms import RegisterForm
+from forms import RegisterForm, AuthForm
 
 
 # Create your views here.
 
-class RegistrationForm(TemplateView):
+class UserRegistration(View):
+
     def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/index.html')
+            user = form.save()
+            return render_to_response('register_success.html')
+            #return HttpResponseRedirect('../../coins/')
         else:
-            args = {}
-            args.update(csrf(request))
-
-            args['form'] = RegisterForm()
-            return render_to_response('register.html', args)
+            return self.registerPage(request, form)
 
     def get(self, request):
+        form = RegisterForm()
+        return self.registerPage(request, form)
+
+    def registerPage(self, request, form):
         args = {}
         args.update(csrf(request))
 
-        args['form'] = RegisterForm()
+        args['form'] = form
         return render_to_response('register.html', args)
+
+class UserAuth(View):
+    def get(self, request):
+        form = AuthForm()
+        return self.authPage(request, form)
+
+    def post(self, request):
+        form = AuthForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None and user.is_active:
+            auth.login(request, user)
+            return HttpResponseRedirect('../../coins')
+
+        return self.authPage(request, form, 'Вы неверно ввели логин и/или пароль')
+
+
+    def authPage(self, request, form, error=''):
+        args = {}
+        args.update(csrf(request))
+        args['form'] = form
+        args['error'] = error
+
+        return render_to_response('auth.html', args)
+
+class UserLogout(View):
+    def get(self, request):
+        auth.logout(request)
+        return HttpResponseRedirect('../../coins')

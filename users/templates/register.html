@@ -1,21 +1,14 @@
+{% extends 'base.html' %}
 {% load bootstrap %}
 
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="http://yastatic.net/bootstrap/3.1.1/css/bootstrap.min.css">
-    <script type="text/js" src=http://yastatic.net/bootstrap/3.1.1/js/bootstrap.min.js></script>
-</head>
-<body>
+{% block title %}Регистрация{% endblock %}
+{% block content %}
     <h1>Регистрация</h1>
 
-    <form method="post">
+    <form method="post" action="" style="width: 30%">
         {% csrf_token %}
         {{ form|bootstrap }}
 
-        <input type="submit" value="Регистрация">
+        <input type="submit" value="Регистрация" class="btn btn-default">
     </form>
-</body>
-</html>
+{% endblock %}

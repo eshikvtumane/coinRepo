@@ -32,7 +32,7 @@ class Metals(models.Model):
 		db_table = 'Metals'
 
 	#metal = models.AutoField(primary_key=True)
-	metal_description = models.CharField(max_length='10000')
+	metal_description = models.CharField(max_length='255')
 
 
 class Mints(models.Model):
@@ -75,16 +75,14 @@ class Coins(models.Model):
 	coin_weight = models.FloatField()
 	coin_diameter = models.FloatField()
 	coin_thickness = models.FloatField()
-	painter = models.CharField(max_length='100')
-	sculptor = models.CharField(max_length='100')
-	coin_herd = models.CharField(max_length='10000') # edge of a coin http://tinyurl.com/m56ms6y
-	description = models.CharField(max_length='1000000')
+	coin_herd = models.CharField(max_length='255') # edge of a coin http://tinyurl.com/m56ms6y
+	painter = models.CharField(max_length='255')
+	sculptor = models.CharField(max_length='255')
+	description = models.CharField(max_length='255')
 	item_number = models.CharField(max_length=9) # http://tinyurl.com/kbh5fly
 	photo_obverse = models.ImageField()
 	photo_reverse = models.ImageField()
 	link_cbr = models.URLField() # link on description coin on site Central Bank of Russia
-
-
 
 
 class  CoinToMint(models.Model):
