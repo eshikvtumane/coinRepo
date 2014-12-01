@@ -1,5 +1,5 @@
 from django.contrib import admin
-from coins.models import Countries,Series,Coins,CoinToMint,Metals,Mints,Denominals
+from coins.models import Countries,Series,Coins,CoinToMint,Metals,Mints#,Denominals
 
 class CountriesAdmin(admin.ModelAdmin):
     fields = ["country_name","country_flag"]
@@ -21,8 +21,8 @@ class MetalsAdmin(admin.ModelAdmin):
 
 class MintsAdmin(admin.ModelAdmin):
     fields = ["country","mint_name","mint_abbreviation"]
-class DenominalsAdmin(admin.ModelAdmin):
-    fields = ["denominal_name","denominal_country"]
+#class DenominalsAdmin(admin.ModelAdmin):
+ #   fields = ["denominal_name","denominal_country"]
 
 admin.site.register(Countries,CountriesAdmin)
 admin.site.register(Series,SeriesAdmin)
@@ -30,4 +30,4 @@ admin.site.register(Coins,CoinsAdmin)
 admin.site.register(CoinToMint,CoinToMintAdmin)
 admin.site.register(Metals,MetalsAdmin)
 admin.site.register(Mints,MintsAdmin)
-admin.site.register(Denominals,DenominalsAdmin)
+#admin.site.register(Denominals,DenominalsAdmin)
