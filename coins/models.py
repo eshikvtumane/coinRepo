@@ -11,6 +11,8 @@ class Countries(models.Model):
     #id = models.AutoField(primary_key=True)
     country_name = models.CharField(max_length=200)
     country_flag = models.ImageField()
+    def __repr__(self):
+        return self.country_name
     def __str__(self):
         return self.country_name
 
@@ -44,8 +46,10 @@ class Mints(models.Model):
     mint_name = models.CharField(max_length='200')
     mint_abbreviation = models.CharField(max_length=10)
 
-    def __str__(self):
+    def __repr__(self):
         return self.mint_abbreviation
+
+
 
 
 
