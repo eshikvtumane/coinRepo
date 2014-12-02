@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block scripts %}
+    <!--http://jsfiddle.net/koenpunt/5Ab8B/
+    https://github.com/harvesthq/chosen/releases/
+    http://harvesthq.github.io/chosen/
+    http://alxlit.name/bootstrap-chosen/-->
+
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'custom/search_coins.js' %}"></script>
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="search_box">
+        <form action="." method="post">
+            {% csrf_token %}
+            <div>
+                <label>Название монеты:</label>
+                <input type="text" id="search_box" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label>Серия:</label>
+                <select id="series" class="chosen-select" data-placeholder="Выберите серию">
+                    <option value="-1"></option>
+                    {% for s in series %}
+                        <option value="{{ s.id }}">{{ s.series_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label>Качество</label>
+                <select id="qualities" class="chosen-select" data-placeholder="Select qualities">
+                    <option value="-1"></option>
+                    {% for q in qualities %}
+                        <option value="{{ q.id }}">{{ q.quality_coinage }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <div>
+                    <label>Металл:</label>
+                </div>
+
+                <div class="col-md-4">
+                    <select id="qualities" class="chosen-select" data-placeholder="Select metal">
+                        <option value="-1"></option>
+                        {% for m in metals %}
+                            <option value="{{ m.id }}">{{ m.metal_description }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+            </div>
+            <input type="button" id="btnSearch" value="Submit" class="btn btn-success">
+        </form>
+    </div>
+
+    <div id="result_box"></div>
+{% endblock %}

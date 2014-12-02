@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}Каталог монет{% endblock %}
+
+{% block stiles %}
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'chosen/chosen.css' %}">-->
+{% endblock %}
+
+{% block scripts %}
+    <!--http://jsfiddle.net/koenpunt/5Ab8B/
+    https://github.com/harvesthq/chosen/releases/
+    http://harvesthq.github.io/chosen/
+    http://alxlit.name/bootstrap-chosen/-->
+
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'custom/search_coins.js' %}"></script>
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+
+
+    <div id="country_box">
+        {% for country in countries%}
+            <div class="col-lg-3" align="center">
+                <div>
+                    <img src="{{ country.country_flag }}" width="40%" height="50%">
+                </div>
+                <div>
+                    <a href="/coins/catalog/city/{{ country.id }}">{{ country.country_name }}</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="result_box">
+
+    </div>
+
+{% endblock %}
