@@ -1,4 +1,8 @@
 *.pyc
+*.jpg
+*.jpeg
+*.png
+*.svg
 .idea/
 migrations/
 db.sqlite3
