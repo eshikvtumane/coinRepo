@@ -10,13 +10,12 @@ import json
 #
 # Create your views here.
 def index(request):
-    return render_to_response(request,'coins/home.html')
+    return render_to_response('coins/home.html')
 
 class SearchView(View):
     def get(self,request,*args,**kwargs):
         countries = Countries.objects.all()
-
-        return render_to_response('coins/coin_search.html',{'countries':countries})
+        return render_to_response('coins/coin_search.html',{'countries':countries},context_instance = RequestContext(request))
 
 def ajax(request):
      country = request.GET["country"]
