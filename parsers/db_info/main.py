@@ -5,7 +5,7 @@ import progressbar
 
 def connectDB():
 	try:
-		con = lite.connect('/home/eshik/coins_project/project/coins_site/db.sqlite3')
+		con = lite.connect('/home/inframercury/django/coinRepo/db.sqlite3')
 		return con
 	except lite.Error, e:
 		print 'Error: %s'%e.args[0]

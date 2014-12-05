@@ -69,10 +69,10 @@ class Coins(models.Model):
 	coin_metal = models.ForeignKey('Metals')
 	quality = models.ForeignKey('Qualities')
 
-	coin_name = models.CharField(max_length='255')
+	coin_name = models.CharField(max_length='255',null=True)
 	link_cbr = models.URLField() # link on description coin on site Central Bank of Russia
-	description_observe = models.CharField(max_length='255')
-	description_reverse = models.CharField(max_length='255')
+	description_observe = models.CharField(max_length='255',null=True)
+	description_reverse = models.CharField(max_length='255',null=True)
 	painter = models.CharField(max_length='255')
 	sculptor = models.CharField(max_length='255')
 	coin_herd = models.CharField(max_length='255', blank=True) # edge of a coin http://tinyurl.com/m56ms6y
@@ -80,12 +80,12 @@ class Coins(models.Model):
 	photo_reverse = models.ImageField(upload_to='/static/coins')
 
 	rate = models.IntegerField() #coin rating
-	denominal = models.CharField(max_length='255')
+	denominal = models.CharField(max_length='255',null=True)
 	#denominal_name = models.ForeignKey('Denominals') #currency
-	coin_weight = models.FloatField(blank=True)
-	chemistry = models.FloatField(blank=True)
-	coin_diameter = models.FloatField(blank=True)
-	coin_thickness = models.FloatField(blank=True)
+	coin_weight = models.FloatField(blank=True,null=True)
+	chemistry = models.FloatField(blank=True,null=True)
+	coin_diameter = models.FloatField(blank=True,null = True)
+	coin_thickness = models.FloatField(blank=True,null = True)
 	coin_circulation = models.BigIntegerField()
 	manufacture_date = models.DateField()
 	item_number = models.CharField(max_length=9) # http://tinyurl.com/kbh5fly
