@@ -135,7 +135,7 @@ def insertCoins(con, countries, wb):
 				query += (q[0],)
 				break
 
-		query += (ws.row_values(i)[0],) # name
+		query += (ws.row_values(i)[0].encode('utf-8'),) # name
 		query += (ws.row_values(i)[1],) # link
 		query += (ws.row_values(i)[3],) # desc1
 		query += (ws.row_values(i)[4],) # desc2
