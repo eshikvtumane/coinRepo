@@ -54,7 +54,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_ajax.middleware.AJAXMiddleware',
+    #'django_ajax.middleware.AJAXMiddleware',
 )
 
 ROOT_URLCONF = 'coins_site.urls'

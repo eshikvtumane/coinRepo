@@ -33,16 +33,15 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                 console.log('End operation.:');
 
                 // get data on server
-                obj = JSON.parse(data['content']);
+                coins = JSON.parse(data[1]);
 
                 // get quantity pages
-                total_pages = obj[0]
+                total_pages = data[0]
                 console.log(first_search)
                 if(first_search == 'True'){
                     Paginator(total_pages)
                 }
 
-                coins = JSON.parse(obj[1])
 
                 html = '<div>';
                 coins.forEach(function(entry){

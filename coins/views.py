@@ -87,7 +87,6 @@ class SearchView(View):
             else:
                 criterions.append(Q(item_number = number))
 
-
             page_size = 15
             total_pages, obj = False, False
             if first_load == 'True':
@@ -111,19 +110,12 @@ class SearchView(View):
 
     # function work at transition page to page
     def pageLoad(self, criterions, page, page_size):
-        print page_size, page
-        print page_size * page
         filter_end = int(page_size) * int(page)
         filter_start = int(filter_end) - int(page_size)
-        print filter_end, filter_start
+
         obj = Coins.objects.filter(reduce(operator.and_,criterions))[filter_start:filter_end] #item_number=number
         total_pages = 0
 
         return total_pages, obj
 
 
-
-
-        '''            count_objs = obj.count
-            page_size = 15
-            total_pages = (count_objs + page_size - 1) / page_size'''
