@@ -1,5 +1,5 @@
 function Paginator(total_pages){
-    if(total_pages != 1){
+    if(total_pages > 1){
         $('#pagination').html('<ul id="pagination-demo" class="pagination-sm"></ul>')
         $('#pagination-demo').twbsPagination({
             totalPages: total_pages,
@@ -13,6 +13,9 @@ function Paginator(total_pages){
                 ajaxCoinsSearch('False', page);
             }
         });
+    }
+    else if(total_pages == 0){
+        $('#pagination').html('<h2>Данных не найдено</h2>')
     }
     else{
         $('#pagination').html('')

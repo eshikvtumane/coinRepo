@@ -33,20 +33,19 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                 console.log('End operation.:');
 
                 // get data on server
-                obj = JSON.parse(data[1]);
+                coins = JSON.parse(data[1]);
 
                 // get quantity pages
-                total_pages = data[0];
-                console.log(first_search);
+                total_pages = data[0]
+                console.log(first_search)
                 if(first_search == 'True'){
                     Paginator(total_pages)
                 }
 
 
-
                 html = '<div>';
                 coins.forEach(function(entry){
-                    fields = entry['fields'];
+                    fields = entry['fields']
 
                     name = fields['coin_name'];
                     name_length = 20
@@ -58,7 +57,7 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                     html += '<div><a href="' + entry['pk'] + '" title="' + fields['coin_name'] + '"><label>' + name + '</a></label></div>';
                     html += '<div><label>' + fields['rate'] + ' ' + fields['denominal'] + '</label> </div></div>';
                 });
-                html += '</div>';
+                html += '</div>'
 
                 $('#result_box').html(html)
             }
