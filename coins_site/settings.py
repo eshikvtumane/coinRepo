@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'whoosh',
     'haystack',
     #'django_ajax',
+    'main',
     'coins',
     'users',
 )

@@ -4,7 +4,7 @@ from views import CatalogView, SearchView, CoinsView, CoinSelectView
 from coins import views
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$',views.index , name='home'),
+    #url(r'^$',views.index , name='home'),
     url(r'search/',views.SearchView.as_view() , name='search-coin'),
     #url(r'country_ajax/',views.ajax,name='country-ajax'),
     url(r'^catalog/$', CatalogView.as_view()),
