@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <h1>{{ coin.0.coin_name }}</h1>
+    <div>
+            <label>Серия:</label>
+            <label>{{ coin.0.series__series_name }}</label>
+        </div>
+    <img src="{{ coin.0.photo_obverse }}" width="20%" height="20%">
+    <img src="{{ coin.0.photo_reverse }}" width="20%" height="20%">
+
+    <div id="info_box">
+
+        <div>
+            <label>Номинал:</label>
+            <label>{{ coin.0.rate }} {{ coin.0.denominal }}</label>
+        </div>
+        <div>
+            <label>Качество чеканки:</label>
+            <label>{{ coin.0.quality__quality_coinage }}</label>
+        </div>
+        <div>
+            <label>Содержание химически чистого металла не менее (гр):</label>
+            <label>{{ coin.0.chemistry }}</label>
+        </div>
+        <div>
+            <label>Вес (гр):</label>
+            <label>{{ coin.0.coin_weight }}</label>
+        </div>
+        <div>
+            <label>Диаметр (мм):</label>
+            <label>{{ coin.0.coin_diameter }}</label>
+        </div>
+        <div>
+            <label>Толщина (мм):</label>
+            <label>{{ coin.0.coin_thickness }}</label>
+        </div>
+        <div>
+            <label>Тираж:</label>
+            <label>{{ coin.0.coin_circulation }}</label>
+        </div>
+        <div>
+            <label>Дата выпуска:</label>
+            <label>{{ coin.0.manufacture_date }}</label>
+        </div>
+        <div>
+            <label>Каталожный номер:</label>
+            <label>{{ coin.0.item_number }}</label>
+        </div>
+        <div>
+            <a href="{{ coin.0.link_cbr }}">Монета на сайте ЦБР</a>
+        </div>
+
+    </div>
+
+    <div id="description">
+        <h3>Описание монеты</h3>
+        <div>
+            <label>Аверс:</label>
+            <label>{{ coin.0.description_observe }}</label>
+        </div>
+        <div>
+            <label>Реверс:</label>
+            <label>{{ coin.0.description_reverse }}</label>
+        </div>
+        <div>
+            <label>Художник(и):</label>
+            <label>{{ coin.0.painter }}</label>
+        </div>
+        <div>
+            <label>Скульптор(ы):</label>
+            <label>{{ coin.0.sculptor }}</label>
+        </div>
+        <div>
+            <label>Монетный двор:</label>
+            {% for mint in mints %}
+                <label>{{ mint.mint__mint_name }}</label>;
+            {% endfor %}
+        </div>
+        <div>
+            <label>Гурт:</label>
+            <label>{{ coin.0.coin_herd }}</label>
+        </div>
+    </div>
+
+
+{% endblock %}

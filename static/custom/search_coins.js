@@ -1,4 +1,36 @@
 $(document).ready(function(){
+//search name coins with help whoosh
+//https://github.com/bassjobsen/Bootstrap-3-Typeahead
+//http://wadya.pp.ua/2013/01/23/%D0%B0%D0%B2%D1%82%D0%BE%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B8%D1%82-%D1%81-%D0%B8%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5%D0%BC-ajax-%D0%BF%D1%80%D0%B8-%D0%BF%D0%BE/
+    $('#search_name').typeahead({
+        source:function(query, process){
+        console.log('Query: ' + query);
+            return $.ajax({
+                        type:'GET',
+                        url:'/coins/catalog/search/',
+                        data:{
+                            'search_name':query
+                        },
+                        dataType:'json',
+                        success:function(data){
+                            var name = Array()
+                            data.forEach(function(entry){
+                                name.push(entry['fields']['coin_name'])
+                            });
+                            arr_names = deleteDuplicate(name)
+                            console.log(deleteDuplicate(arr_names))
+                            return process(arr_names)
+                        }
+                    });
+        },
+        /*highlighter: function(item){
+            console.log('Opa, working')
+            var parts = item.split('_');
+            parts.shift();
+            return item;
+        }*/
+    });
+
     $('#btnSearch').click(function(){
         console.log('Start Ajax ...');
         ajaxCoinsSearch('True', 1);
@@ -10,8 +42,17 @@ $(document).ready(function(){
         $('select[class="chosen-select"]').val('').trigger('liszt:updated');
         $('select[class="chosen-select"]').attr("text", "selected").trigger('chosen:updated');
     });
+
 });
 
+// delete duplicate name coins in array
+function deleteDuplicate(arr){
+    var uniqueNames = [];
+    $.each(arr, function(i, el){
+        if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+    });
+    return uniqueNames
+}
 function ajaxCoinsSearch(first_search, number_page){ // first_search указывает, происходит загрузка контента при поиске или переходе меджу страницами
     $.ajax({
             type:'POST',
@@ -54,7 +95,7 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                     }
 
                     html += '<div class="coins_view col-lg-3" align="center"><div class="coin_item"><img src="' + fields['photo_reverse'] + '" width="100px" height="100px"></div>';
-                    html += '<div><a href="' + entry['pk'] + '" title="' + fields['coin_name'] + '"><label>' + name + '</a></label></div>';
+                    html += '<div><a href="' + entry['pk'] + '" title="' + fields['coin_name'] + '" target="_blank"><label>' + name + '</label></a></div>';
                     html += '<div><label>' + fields['rate'] + ' ' + fields['denominal'] + '</label> </div></div>';
                 });
                 html += '</div>'

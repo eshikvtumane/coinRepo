@@ -9,20 +9,19 @@ import json
 
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
-from models import Countries, Series, Qualities, Metals, Coins, Mints
+from models import Countries, Series, Qualities, Metals, Coins, Mints, CoinToMint
 
 from django.db.models import Q # http://proft.me/2011/01/22/polnotekstovyj-poisk-v-django/
 import operator
 #from django_ajax.mixin import AJAXMixin # https://github.com/yceruto/django-ajax
 #import django_ajax.shortcuts
+
+#http://django-haystack.readthedocs.org/en/latest/tutorial.html
+from haystack.query import SearchQuerySet
 import json
 
-#
+
 # Create your views here.
-class HomePage(View):
-    def get(self,request):
-        c = RequestContext(request)
-        return render_to_response('coins/home.html',c)
 
 # def ajax(request):
 #      country = request.GET["country"]
@@ -36,11 +35,10 @@ class HomePage(View):
 
 class CatalogView(View):
     def get(self, request):
+        template_name = 'catalog/catalog.html'
         countries = Countries.objects.all()
-        args = {}
-        args.update(csrf(request))
-        args['countries'] = countries
-        return render_to_response('catalog/catalog.html', args)
+        c = RequestContext(request,{'countries':countries})
+        return render_to_response(template_name, c)
 
 class CoinsView(View):
 
@@ -49,16 +47,22 @@ class CoinsView(View):
         series = Series.objects.filter(country_id=country_id)
         qualities = Qualities.objects.all()
         metals = Metals.objects.all()
-        args = {'series':series, 'qualities':qualities, 'metals':metals}
-        return render_to_response(template_name, args)
+        coins = Coins.objects.order_by('?')[0:15] # select random coins objects
+        c = RequestContext(request, {'series':series, 'qualities':qualities, 'metals':metals, 'coins':coins})
+        return render_to_response(template_name, c)
 
 
 class SearchView(View):
     template_name = 'catalog/catalog.html'
     model = Series
-    '''def get(self, request):
-        return {'text':'Message from server'}'''
 
+# full text search name coins
+    def get(self, request):
+        coins = SearchQuerySet().autocomplete(content_auto=request.GET['search_name'])
+        json = serializers.serialize('json', [coin.object for coin in coins], fields=('coin_name'))
+        return HttpResponse(json, content_type='application/json')
+
+# search coins
     def post(self, request):
         if self.request.is_ajax():
             series = request.POST['series']
@@ -91,11 +95,8 @@ class SearchView(View):
 
             data = serializers.serialize('json', obj, fields=('id', 'coin_name', 'photo_reverse', 'rate', 'denominal'))
             result = json.dumps([total_pages,data])
+
             return HttpResponse(result, content_type='application/json')
-            # c = RequestContext(request,{'result':serializers.serialize("json",obj)})
-            # t = Template("{{result|safe}}")
-            # response = HttpResponse(t.render(c),content_type='application/json;charset=utf-8')
-            # return response
 
     # function work at first search coins
     def firstLoad(self, criterions, page_size):
@@ -104,7 +105,7 @@ class SearchView(View):
         count_objs = obj.count()
         total_pages = (count_objs + page_size - 1) / page_size
 
-        return total_pages, list(obj[0:page_size])
+        return total_pages, obj[0:page_size]
 
     # function work at transition page to page
     def pageLoad(self, criterions, page, page_size):
@@ -116,4 +117,11 @@ class SearchView(View):
 
         return total_pages, obj
 
-
+class CoinSelectView(View):
+    def get(self, request, country_id, coin_id):
+        template = 'catalog/coin_descr.html'
+        coin_id = int(coin_id)
+        description = Coins.objects.filter(id=coin_id).values('coin_name', 'series__series_name', 'rate', 'denominal', 'coin_weight', 'coin_thickness', 'coin_diameter', 'photo_obverse', 'photo_reverse', 'manufacture_date', 'item_number', 'link_cbr', 'coin_circulation', 'chemistry', 'description_observe', 'description_reverse', 'painter', 'sculptor', 'coin_herd', 'quality__quality_coinage')
+        mints = CoinToMint.objects.filter(coin_id=coin_id).values('mint__mint_name')
+        c = RequestContext(request,{'coin': description, 'mints': mints})
+        return render_to_response(template, c)

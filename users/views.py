@@ -45,7 +45,7 @@ class UserAuth(View):
 
         if user is not None and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect('../../coins')
+            return HttpResponseRedirect('/')
 
         return self.authPage(request, form, 'Вы неверно ввели логин и/или пароль')
 
@@ -61,7 +61,7 @@ class UserAuth(View):
 class UserLogout(View):
     def get(self, request):
         auth.logout(request)
-        return HttpResponseRedirect('../../coins')
+        return HttpResponseRedirect('/')
 
 class UserProfile(View):
     def get(self, request):

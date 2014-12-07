@@ -27,23 +27,30 @@ http://esimakin.github.io/twbs-pagination/-->
     <script src="{% static 'js/jquery-pagination/jquery.twbsPagination.js' %}"></script>
     <script src="{% static 'js/jquery-pagination/custom_pagination.js' %}"></script>
 
+    <script src="{% static 'js/Bootstrap-3-Typeahead/bootstrap3-typeahead.js' %}"></script>
+
 
 
 
 {% endblock %}
 
 {% block content %}
+
     <div id="search_box">
+        <h2>Каталог монет</h2>
         <form action="." method="post">
             {% csrf_token %}
-            <div>
-                <label>Название монеты:</label>
-                <input type="text" id="search_name" class="form-control">
-            </div>
+            <h4>Поиск монет</h4>
 
             <div>
                 <label>Каталожный номер:</label>
                 <input type="text" id="search_number" class="form-control">
+            </div>
+            <hr>
+
+            <div>
+                <label>Название монеты:</label>
+                <input type="text" id="search_name" class="form-control span3" data-provide="typeahead">
             </div>
 
             <div class="col-md-4">
@@ -78,13 +85,37 @@ http://esimakin.github.io/twbs-pagination/-->
                 </div>
 
             </div>
-            <input type="button" id="btnSearch" value="Submit" class="btn btn-success">
-            <input type="button" id="btnReset" value="Reset" class="btn btn-warning">
+            <div style="margin:10%">
+                <input type="button" id="btnSearch" value="Submit" class="btn btn-success">
+                <input type="button" id="btnReset" value="Reset" class="btn btn-warning">
+            </div>
+
         </form>
     </div>
     <div border="1px">
         <div><h1>Результаты поиска</h1></div>
-        <div id="result_box" align="center" style="width:100%; height=100%; border:1px" ></div>
+        <div id="result_box" align="center" style="width:100%; height=100%; border:1px" >
+            <h3>Случайный выбор</h3>
+            {% for coin in coins %}
+                <div class="coins_view col-lg-3" align="center">
+                    <div class="coin_item">
+                        <img src="{{ coin.photo_reverse }}" width="100px" height="100px">
+                    </div>
+                    <div>
+                        <a href="{{ coin.id }}" title="{{ coin.coin_name }}" target="_blank"><label>
+                            {% if coin.coin_name|length > 20 %}
+                                {{ coin.coin_name|slice:':20' }}...
+                            {% else %}
+                                {{ coin.coin_name }}
+                            {% endif %}
+                        </label></a>
+                    </div>
+                    <div>
+                        <label>{{ coin.rate }} {{coin.denominal}}</label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div id="pagination" class="col-md-12" align="center"></div>
