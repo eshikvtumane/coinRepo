@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
 
@@ -39,10 +38,10 @@
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
               {% if user.is_authenticated %}
-                <li><a href="/user/logout">Выход</a></li>
+                <li><a href="/users/logout">Выход</a></li>
               {% else %}
-                <li><a href="/user/authentication">Войти</a></li>
-                <li><a href="/user/register">Регистрация</a></li>
+                <li><a href="/users/authentication">Войти</a></li>
+                <li><a href="/users/register">Регистрация</a></li>
               {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
@@ -52,8 +51,11 @@
     <div class="container">
 
       <div class="starter-template">
-      {% block content %}
-      {% endblock %}
+
+        {% block content %}
+
+        {% endblock %}
+
       </div>
 
 

@@ -25,11 +25,11 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
-
-TEMPLATE_DIRS = (
-    BASE_DIR + '/users/templates/',
-    os.path.join(BASE_DIR, '/users/templates/auth'),
-)
+#
+# TEMPLATE_DIRS = (
+#     BASE_DIR + '/users/templates/',
+#     os.path.join(BASE_DIR, '/users/templates/auth'),
+# )
 
 # Application definition
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'bootstrapform',
     #'django_ajax',
     'coins',
-    'users',
+    'users'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -90,5 +90,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),)
+
+
+
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)

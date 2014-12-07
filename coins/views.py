@@ -19,22 +19,19 @@ import json
 
 #
 # Create your views here.
-def index(request):
-    return render_to_response(request,'coins/home.html')
+class HomePage(View):
+    def get(self,request):
+        c = RequestContext(request)
+        return render_to_response('coins/home.html',c)
 
-'''class SearchView(View):
-    def get(self,request,*args,**kwargs):
-        countries = Countries.objects.all()
-        return render_to_response('coins/coin_search.html',{'countries':countries},context_instance = RequestContext(request))
-'''
-
-def ajax(request):
-     country = request.GET["country"]
-     mints = list(Mints.objects.filter(country_id=country))
-     c = RequestContext(request,{'result':serializers.serialize("json",mints)})
-     t = Template("{{result|safe}}")
-     response = HttpResponse(t.render(c),content_type='application/json')
-     return response
+# def ajax(request):
+#      country = request.GET["country"]
+#      mints = list(Mints.objects.filter(country_id=country))
+#      c = RequestContext(request,{'result':serializers.serialize("json",mints)})
+#      t = Template("{{result|safe}}")
+#      response = HttpResponse(t.render(c),content_type='application/json')
+#      response = HttpResponse(t.render(c),content_type='application/json')
+#      return response
 
 
 class CatalogView(View):
@@ -94,7 +91,7 @@ class SearchView(View):
 
             data = serializers.serialize('json', obj, fields=('id', 'coin_name', 'photo_reverse', 'rate', 'denominal'))
             result = json.dumps([total_pages,data])
-            return HttpResponse(result, content_type='application/json; charset=utf-8')
+            return HttpResponse(result, content_type='application/json')
             # c = RequestContext(request,{'result':serializers.serialize("json",obj)})
             # t = Template("{{result|safe}}")
             # response = HttpResponse(t.render(c),content_type='application/json;charset=utf-8')

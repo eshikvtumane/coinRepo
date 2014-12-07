@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.core.context_processors import csrf
 from forms import RegisterForm, AuthForm
+from django.template import RequestContext
 
 
 # Create your views here.
@@ -15,7 +16,7 @@ class UserRegistration(View):
         form = RegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return render_to_response('register_success.html')
+            return render_to_response('users/register_success.html')
             #return HttpResponseRedirect('../../coins/')
         else:
             return self.registerPage(request, form)
@@ -29,7 +30,7 @@ class UserRegistration(View):
         args.update(csrf(request))
 
         args['form'] = form
-        return render_to_response('register.html', args)
+        return render_to_response('users/register.html', args)
 
 class UserAuth(View):
     def get(self, request):
@@ -55,9 +56,14 @@ class UserAuth(View):
         args['form'] = form
         args['error'] = error
 
-        return render_to_response('auth.html', args)
+        return render_to_response('users/auth.html', args)
 
 class UserLogout(View):
     def get(self, request):
         auth.logout(request)
         return HttpResponseRedirect('../../coins')
+
+class UserProfile(View):
+    def get(self, request):
+        c = RequestContext(request)
+        return render_to_response("users/profile.html",c)
