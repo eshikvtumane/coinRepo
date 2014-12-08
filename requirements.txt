@@ -3,3 +3,4 @@ Pillow
 django-bootstrap-form
 whoosh
 django-haystack
+gunicorn

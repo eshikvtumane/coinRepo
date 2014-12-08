@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["desolate-journey-3333.herokuapp.com"]
 
 TEMPLATE_DIRS = (
     BASE_DIR + '/users/templates/',
