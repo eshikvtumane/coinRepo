@@ -6,7 +6,7 @@ from django.contrib import admin
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^', include('main.urls')),
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^coins/',include('coins.urls')),
     # url(r'^blog/', include('blog.urls')),
 

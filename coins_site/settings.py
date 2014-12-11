@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 """
 Django settings for coins_site project.
 
@@ -34,6 +35,7 @@ TEMPLATE_DIRS = (
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +46,7 @@ INSTALLED_APPS = (
     'whoosh',
     'haystack',
     #'django_ajax',
+    # applications
     'main',
     'coins',
     'users',
@@ -60,7 +63,16 @@ MIDDLEWARE_CLASSES = (
     #'django_ajax.middleware.AJAXMiddleware',
 )
 
-#WHOOSH_INDEX = os.path.join(BASE_DIR, 'whoosh/')
+GRAPPELLI_ADMIN_TITLE = u'Монеты НА! - Административная панель'
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
+)
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -87,7 +99,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 

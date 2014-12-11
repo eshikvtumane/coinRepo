@@ -4,3 +4,4 @@ django-bootstrap-form
 whoosh
 django-haystack
 gunicorn
+django-grappelli
