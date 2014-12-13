@@ -5,6 +5,8 @@ from django.contrib import admin
 #from coins import *
 
 urlpatterns = patterns('',
+    # Examples:
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^', include('main.urls')),
     url(r'^coins/',include('coins.urls')),
     url(r'^users/', include('users.urls')),
