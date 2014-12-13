@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row">
-        <div class="col-md-6">hello</div>
-        <div class="col-md-6">world</div>
+        <div class="col-md-12">
+            <h1>Моя коллекция</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 well">
+                {% for coin in coins %}
+
+                        <img src="{{ coin.photo_reverse }}" width="100px" height="100px">
+                    </div>
+                    <div>
+                        <a href="{{ coin.id }}" title="{{ coin.coin_name }}" target="_blank"><label>
+                            {% if coin.coin_name|length > 20 %}
+                                {{ coin.coin_name|slice:':20' }}...
+                            {% else %}
+                                {{ coin.coin_name }}
+                            {% endif %}
+                        </label></a>
+                    </div>
+                    <div>
+                        <label>{{ coin.rate }} {{coin.denominal}}</label>
+                    </div>
+
+            {% endfor %}
+        </div>
+
     </div>
 {% endblock %}

@@ -6,6 +6,8 @@ from django.contrib import auth
 from django.core.context_processors import csrf
 from forms import RegisterForm, AuthForm
 from django.template import RequestContext
+from models import CoinToUser
+from coins.models import Coins
 
 
 # Create your views here.
@@ -65,5 +67,6 @@ class UserLogout(View):
 
 class UserProfile(View):
     def get(self, request):
-        c = RequestContext(request)
+        coins = Coins.objects.filter(cointouser__user_id = request.user.id)
+        c = RequestContext(request,{'coins':coins})
         return render_to_response("users/profile.html",c)
