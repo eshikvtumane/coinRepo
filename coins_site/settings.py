@@ -32,6 +32,9 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, '/users/templates/auth'),
 )
 
+LOGIN_URL = '/user/authentication'
+LOGIN_REDIRECT_URL = '/user/authentication'
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -116,3 +119,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),)
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+
+MEDIA_URL_AVATAR = 'avatar/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
