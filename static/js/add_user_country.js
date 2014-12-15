@@ -12,11 +12,11 @@ $(document).ready(function(){
                 console.log(data)
                 try{
                     fields = data[0]['fields']
-                    html = '<tr class="bg-info"><td>'
+                    html = '<tr class="bg-info"><td class="flag">'
                     html += '<img src="' + fields['country_flag'] + '"></td><td>'
-                    html += '<a href="/user/add/series/' + data['pk'] + '">' + fields['country_name'] + '</a>'
+                    html += '<a href="' + data['pk'] + '">' + fields['country_name'] + '</a>'
                     html += '</td><td>'
-                    html += '<a href="" class="btn btn-primary">Перейти</a>'
+                    html += '<a href="' + data['pk'] + '" class="btn btn-primary">Перейти</a>'
                     html += '</td><td>'
                     html += '<a href="" class="btn btn-danger">Удалить</a>'
                     html += '</td></tr>'

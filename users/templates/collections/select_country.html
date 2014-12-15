@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_country.css' %}">
+{% endblock %}
+
 {% block scripts %}
     <!--http://jsfiddle.net/koenpunt/5Ab8B/
     https://github.com/harvesthq/chosen/releases/
@@ -27,20 +31,21 @@
         <input type="submit" id="btnAdd" value="Добавить" class="btn btn-success">
     </div>
 
+<h3>Страны, добавленные пользователем</h3>
     <div id="usr_countries">
         {% if countries_user %}
-            <h3>Страны, добавленные пользователем</h3>
+
             <table id="tbl_country" class="table">
                 {% for country in countries_user %}
                 <tr class='bg-info'>
-                    <td width="10%">
-                        <img style="height:10%;width:70%" src="{{ country.country__country_flag }}">
+                    <td class='flag'>
+                        <img src="{{ country.country__country_flag }}">
                     </td>
                     <td>
-                        <a style="font-size:20px" href="{{ country.country }}">{{ country.country__country_name }}</a>
+                        <a href="{{ country.country }}">{{ country.country__country_name }}</a>
                     </td>
                     <td>
-                        <a href="" class="btn btn-primary">Перейти</a>
+                        <a href="{{ country.country }}" class="btn btn-primary">Перейти</a>
                     </td>
                     <td>
                         <a href="" class="btn btn-danger">Удалить</a>
