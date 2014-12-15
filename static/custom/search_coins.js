@@ -54,6 +54,7 @@ function deleteDuplicate(arr){
     return uniqueNames
 }
 function ajaxCoinsSearch(first_search, number_page){ // first_search указывает, происходит загрузка контента при поиске или переходе меджу страницами
+    $('#result_box').html('<img src="/static/gif/ajax-loader.gif">')
     $.ajax({
             type:'POST',
             url:'/coins/catalog/search/',
@@ -65,7 +66,8 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                 'qualities':$('#qualities').val(),
                 'metals':$('#metals').val(),
                 'page' : number_page,
-                'first_load' : first_search
+                'first_load' : first_search,
+                'country':$('#country').html()
             },
             dataType: 'json',
             success:function(data){
@@ -101,6 +103,7 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                 html += '</div>'
 
                 $('#result_box').html(html)
+
             }
         });
 }
