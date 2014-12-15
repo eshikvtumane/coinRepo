@@ -1,10 +1,15 @@
 
-#tbl_country img{
+#tbl_country img {
     height:10%;
     width:70%
 }
 
-#tbl_country a{
+#tbl_series img{
+    height:30%;
+    width:80%
+}
+
+#tbl_country a, #tbl_series a{
     font-size:20px;
 }
 
