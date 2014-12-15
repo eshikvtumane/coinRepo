@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.css' %}">
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <link href='{% static "favicon.ico" %}' rel="icon" type="image/x-icon" />
 
     <!--https://github.com/alxlit/bootstrap-chosen -->
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/bootstrap.css' %}">
@@ -40,6 +41,8 @@
             <li><a href="#contact">Contact</a></li>
               <li><a href="/coins/catalog">Каталог монет</a></li>
               {% if user.is_authenticated %}
+                <li><a href="">Здравствуйте, {{user.username}}!</a></li>
+                <li><a href="/user/collections">Коллекции</a></li>
                 <li><a href="/user/logout">Выход</a></li>
               {% else %}
                 <li><a href="/user/authentication">Войти</a></li>
