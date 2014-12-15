@@ -1,10 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block scripts %}
+    <!--http://jsfiddle.net/koenpunt/5Ab8B/
+    https://github.com/harvesthq/chosen/releases/
+    http://harvesthq.github.io/chosen/
+    http://alxlit.name/bootstrap-chosen/-->
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+<!-- Change design select element -->
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'js/add_user_country.js' %}"></script>
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<h1>Добавленные страны</h1>
+    <div>
+        <h3>Добавьте страну:</h3>
+        <select id="countries" class="chosen-select" data-placeholder="Выберите страну">
+            <option selected="selected" value="-1" hidden="True"></option>
+            {% for country in countries %}
+                <option value="{{ country.id }}">{{ country.country_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" id="btnAdd" value="Добавить" class="btn btn-success">
+    </div>
+
+    <div id="usr_countries">
+        {% if countries_user %}
+            <h3>Страны, добавленные пользователем</h3>
+            <table id="tbl_country" class="table">
+                {% for country in countries_user %}
+                <tr class='bg-info'>
+                    <td width="10%">
+                        <img style="height:10%;width:70%" src="{{ country.country__country_flag }}">
+                    </td>
+                    <td>
+                        <a style="font-size:20px" href="{{ country.country }}">{{ country.country__country_name }}</a>
+                    </td>
+                    <td>
+                        <a href="" class="btn btn-primary">Перейти</a>
+                    </td>
+                    <td>
+                        <a href="" class="btn btn-danger">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3>Нет выбранных стран</h3>
+            <label hidden="True" id="hidden">True</label>
+            <span>Выберите те страны, монеты которых есть у вас</span>
+        {% endif %}
+    </div>
+
+
+
+
+{% endblock %}
