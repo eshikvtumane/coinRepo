@@ -115,8 +115,11 @@ class Coins(models.Model):
 	manufacture_date = models.DateField(verbose_name='Дата выпуска')
 	item_number = models.CharField(max_length=9, verbose_name='Каталожный номер') # http://tinyurl.com/kbh5fly
 
-	'''def __unicode__(self):
-		return'''
+	def admin_image(self):
+		return u'<img src="%s" style="width: 50%%; height:50%%"/>'%(self.photo_reverse.url)
+
+	admin_image.short_description = u'Фото реверса'
+	admin_image.allow_tags = True
 
 class CoinToMint(models.Model):
 	class Meta:

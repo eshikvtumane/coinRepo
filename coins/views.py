@@ -41,7 +41,7 @@ class CatalogView(View):
         countries = Countries.objects.all()
         args = {}
         args.update(csrf(request))
-        args['countries'] = countries
+        args = RequestContext(request, {'countries':countries})
         return render_to_response('catalog/catalog.html', args)
 
 class CoinsView(View):
@@ -52,7 +52,7 @@ class CoinsView(View):
         qualities = Qualities.objects.all()
         metals = Metals.objects.all()
         coins = Coins.objects.order_by('?')[0:15] # select random coins objects
-        args = {'series':series, 'qualities':qualities, 'metals':metals, 'coins':coins}
+        args = RequestContext(request, {'series':series, 'qualities':qualities, 'metals':metals, 'coins':coins, 'country': country_id})
         return render_to_response(template_name, args)
 
 
@@ -77,8 +77,13 @@ class SearchView(View):
             number_page = request.POST['page']
             first_load = request.POST['first_load']
 
+            country = request.POST['country']
+
             criterions = []
+
             if not number:
+                if country != ''.strip():
+                    criterions.append(Q(country_id=int(country)),)
                 if series != '':
                     criterions.append(Q(series_id=series),)
                 if name != '':
@@ -125,6 +130,7 @@ class CoinSelectView(View):
     def get(self, request, country_id, coin_id):
         template = 'catalog/coin_descr.html'
         coin_id = int(coin_id)
-        description = Coins.objects.filter(id=coin_id).values('coin_name', 'series__series_name', 'rate', 'denominal', 'coin_weight', 'coin_thickness', 'coin_diameter', 'photo_obverse', 'photo_reverse', 'manufacture_date', 'item_number', 'link_cbr', 'coin_circulation', 'chemistry', 'description_observe', 'description_reverse', 'painter', 'sculptor', 'coin_herd', 'quality__quality_coinage')
+        description = Coins.objects.filter(id=coin_id, country=country_id).values('coin_name', 'series__series_name', 'rate', 'denominal', 'coin_weight', 'coin_thickness', 'coin_diameter', 'photo_obverse', 'photo_reverse', 'manufacture_date', 'item_number', 'link_cbr', 'coin_circulation', 'chemistry', 'description_observe', 'description_reverse', 'painter', 'sculptor', 'coin_herd', 'quality__quality_coinage')
         mints = CoinToMint.objects.filter(coin_id=coin_id).values('mint__mint_name')
-        return render_to_response(template, {'coin': description, 'mints': mints})
+        args = RequestContext(request, {'coin': description, 'mints': mints})
+        return render_to_response(template, args)

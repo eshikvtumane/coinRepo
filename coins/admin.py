@@ -21,10 +21,10 @@ class SeriesAdmin(admin.ModelAdmin):
     get_country.admin_order_field = 'country__country_name'
 
 class CoinsAdmin(admin.ModelAdmin):
-    fields = ["country","series","coin_metal","rate", 'denominal',"manufacture_date","coin_circulation",
+    fields = ["country","series","coin_name","coin_metal","rate", 'denominal',"manufacture_date","coin_circulation",
              "coin_weight","coin_diameter","coin_thickness","painter","sculptor","coin_herd","item_number",
               "photo_obverse","photo_reverse","link_cbr", "chemistry", "quality"]
-    list_display = ["coin_name", 'get_country',"rate",'denominal',"get_series", "get_quality"]
+    list_display = ["coin_name", 'get_country',"rate",'denominal',"get_series", "get_quality", 'admin_image']
 
     search_fields = ('coin_name',)
     list_filter = ('rate', 'denominal')

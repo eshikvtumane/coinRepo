@@ -10,8 +10,6 @@
 {% endblock %}
 
 {% block scripts %}
-
-
     <!--http://jsfiddle.net/koenpunt/5Ab8B/
     https://github.com/harvesthq/chosen/releases/
     http://harvesthq.github.io/chosen/
@@ -29,12 +27,10 @@ http://esimakin.github.io/twbs-pagination/-->
 
     <script src="{% static 'js/Bootstrap-3-Typeahead/bootstrap3-typeahead.js' %}"></script>
 
-
-
-
 {% endblock %}
 
 {% block content %}
+    <label hidden="True" id="country">{{ country }}</label>
 
     <div id="search_box">
         <h2>Каталог монет</h2>
