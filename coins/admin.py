@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+from django import forms
 from django.contrib import admin
 from coins.models import Countries,Series,Coins,CoinToMint,Metals,Mints#,Denominals
 from django.utils.translation import gettext_lazy as _
@@ -20,7 +21,12 @@ class SeriesAdmin(admin.ModelAdmin):
     get_country.short_description = 'Страна'
     get_country.admin_order_field = 'country__country_name'
 
+class CoinToMintInline(admin.StackedInline):
+    model = CoinToMint
+
+
 class CoinsAdmin(admin.ModelAdmin):
+    inlines = [CoinToMintInline,]
     fields = ["country","series","coin_name","coin_metal","rate", 'denominal',"manufacture_date","coin_circulation",
              "coin_weight","coin_diameter","coin_thickness","painter","sculptor","coin_herd","item_number",
               "photo_obverse","photo_reverse","link_cbr", "chemistry", "quality"]
@@ -50,10 +56,10 @@ class CoinsAdmin(admin.ModelAdmin):
         super(CoinsAdmin, self).__init__(*args, **kwargs)'''
 
 
-class CoinToMintAdmin(admin.ModelAdmin):
+'''class CoinToMintAdmin(forms.ModelAdmin):
     fields = ["coin","mint"]
     list_display = ['get_coin', 'get_mint']
-    search_fields = ('coin', 'mint',)
+    search_fields = ('coin_id__coins__id', 'mint',)
 
     def get_coin(self, obj):
         return obj.coin.coin_name
@@ -64,6 +70,7 @@ class CoinToMintAdmin(admin.ModelAdmin):
     get_coin.admin_order_filter = 'coin__coin_name'
     get_mint.short_description = _('Монетный двор')
     get_mint.admin_order_filter = 'mint__mint_name'
+'''
 
 class MetalsAdmin(admin.ModelAdmin):
     fields = ["metal_description"]
@@ -77,7 +84,7 @@ class MintsAdmin(admin.ModelAdmin):
 admin.site.register(Countries,CountriesAdmin)
 admin.site.register(Series,SeriesAdmin)
 admin.site.register(Coins,CoinsAdmin)
-admin.site.register(CoinToMint,CoinToMintAdmin)
+#admin.site.register(CoinToMint,CoinToMintAdmin)
 admin.site.register(Metals,MetalsAdmin)
 admin.site.register(Mints,MintsAdmin)
 #admin.site.register(Denominals,DenominalsAdmin)
