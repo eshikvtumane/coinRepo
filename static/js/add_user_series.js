@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    console.log($('#series').val())
+
     $('#btnAdd').click(function(){
         console.log('1');
         series_id = $('#series').val();
@@ -15,13 +17,13 @@ $(document).ready(function(){
             success: function(data){
                 console.log(data)
 
-                html = '<tr class="bg-info"><td class="flag">'
+                html = '<tr class="bg-info" id='+ series_id +'><td class="flag">'
                 html += '<img src="/static/photo/gold_coin.jpg"></td><td>'
                 html += '<a href="' + series_id + '">' + series_name + '</a>'
                 html += '</td><td>'
                 html += '<a href="' + series_id + '" class="btn btn-primary">Перейти</a>'
                 html += '</td><td>'
-                html += '<a href="" class="btn btn-danger">Удалить</a>'
+                html += '<button class="btn btn-danger" value="' + series_id + '" onclick="deleteSeries(this);">Удалить</button>'
                 html += '</td></tr>'
 
                 if(data == '200'){
@@ -38,7 +40,34 @@ $(document).ready(function(){
                     }
                 }
 
+                $('#series :selected').remove().trigger('chosen:updated');
+                $('#series :selected').val('').trigger('chosen:updated');
             }
         });
     });
+
 });
+
+function deleteSeries(elem){
+        var series_id = elem.value;
+
+        $.ajax({
+            type: 'POST',
+            url:'/user/series/delete/',
+            data:{
+                's_id': series_id
+            },
+            dataType: 'json',
+            success:function(data){
+                console.log(data[0]['fields']['series_name']);
+                if(data != '500'){
+                    tr = 'tr[id='+ series_id + ']'
+                    $(tr).remove();
+                    $('#series').append('<option value="'+ series_id +'">'+ data[0]['fields']['series_name'] +'</option>').trigger('chosen:updated');
+                }
+                else{
+                    console.log('Sheet');
+                }
+            }
+        });
+    }
