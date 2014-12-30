@@ -1,10 +1,138 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load staticfiles %}
 
-</body>
-</html>
+{% block title %}
+Монеты пользователя - {{ coin.coin_name }}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+<!-- Change design select element -->
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'js/add_user_series.js' %}"></script>
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+
+    <script src="{% static 'js/add_coins.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div>
+    {% for s in series %}
+        <a href="/user/collections/">Страны</a> /
+        <a href="/user/collections/{{ s.country__id }}">{{ s.country__country_name }}</a> /
+        <a href="/user/collections/{{ s.country__id }}/{{ s.id }}">{{ s.series_name }}</a>
+    {% endfor %}
+</div>
+
+
+<div style="width: 58em; float: left">
+    <h1>{{ coin.coin_name }}</h1>
+    <img src="{{ coin.photo_obverse }}">
+    <img src="{{ coin.photo_reverse }}">
+    <a href="/coins/catalog/city/{{ country }}/{{ coin.id }}" target="_blank" class="btn btn-success">Подробнее о монете</a>
+</div>
+
+       <div id="addCoinInfo" style="width:20em; float: right">
+           <input type="button" class="btn btn-success" value="Добавьте описание монеты" id="showForm">
+           <form method="post">
+               {% csrf_token %}
+                <input type="text" hidden="true" value="{{ coin.id }}" name="coin_id">
+                <div name="add">
+                    <div>
+                        <label></label>
+                        <input type="number" min="1" required="true" class="form-control" placeholder="Введите количество" name="quantity">
+                    </div>
+                    <div>
+                        <label>Выберите монетный двор</label>
+                        <select class="chosen-select" name="mint">
+                            {% for mint in mints %}
+                                <option value="{{ mint.mint__id }}">{{ mint.mint__mint_abbreviation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Выберите состояние монеты</label>
+
+                        <select class="chosen-select" data-placeholder="Выберите состояние монеты" name="condition" required="true">
+                            <option value=""></option>
+                            {% for condition in conditions %}
+                                <option value="{{ condition.id}}">{{ condition.condition_name }} ({{ condition.condition_abbr }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Выберите брак</label> <br>
+                        <select name="defect" class="chosen-select">
+                            {% for defect in defects%}
+                                <option value="{{ defect.id}}">{{ defect.defect_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    <div>
+                        <label>Примечание</label>
+                        <textarea name="note" aria-multiline="5" cols="10" class="form-control"></textarea>
+                    </div>
+
+                </div>
+                <input type="submit" value="Добавить описание" class="btn btn-primary">
+            </form>
+       </div>
+
+    <div style="100%">
+        {% if uci %}
+            <table class="table">
+                <tr>
+                    <th>
+                        Количество монет, шт
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+                        Монетный двор
+                    </th>
+                    <th>
+                        Тип брака
+                    </th>
+                    <th>
+                        Состояние монеты
+                    </th>
+                </tr>
+                {% for info in uci %}
+                    <tr id="{{ info.id }}">
+                        <td>
+                            <input id="q-{{ info.id }}" type="number" min="1" required value="{{ info.quantity }}" class="form-control">
+                        </td>
+                        <td style="width:10%" >
+                            <button value="{{ info.id }}" title="Обновить количество монет" onclick="quantityRefresh(this)"><img src="{% static 'gif/refresh.png' %}" class="refresh"></button>
+                        </td>
+                        <td>
+                            {{ info.mint__mint_abbreviation }}
+                        </td>
+                        <td>
+                            {{ info.defect_type__defect_name }}
+                        </td>
+                        <td bgcolor="{{ info.condition__condition_color }}">
+                            {{ info.condition__condition_name }}
+                        </td>
+                        <td>
+                            {{ info.note }}
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" value="{{ info.id }}" onclick="deleteCoinInfo(this);">Удалить</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3>Ещё не добавлено информации</h3>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}
