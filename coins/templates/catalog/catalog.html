@@ -27,7 +27,7 @@
         {% for country in countries%}
             <div class="col-lg-3" align="center">
                 <div>
-                    <img src="{{ country.country_flag }}" width="40%" height="50%">
+                    <img src="/media/{{ country.country_flag }}" width="40%" height="50%">
                 </div>
                 <div>
                     <a href="/coins/catalog/city/{{ country.id }}">{{ country.country_name }}</a>

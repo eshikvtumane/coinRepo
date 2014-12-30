@@ -13,7 +13,7 @@ class Countries(models.Model):
 
 	#id = models.AutoField(primary_key=True) # id
 	country_name = models.CharField(max_length='200', verbose_name=_(u'Название страны'))
-	country_flag = models.ImageField(upload_to='/static/flag', blank=True, verbose_name=_(u'Флаг страны')) # Image flag for country
+	country_flag = models.ImageField(upload_to='flag', blank=True, verbose_name=_(u'Флаг страны')) # Image flag for country
 
 	def __unicode__(self):
 		return self.country_name
@@ -115,6 +115,9 @@ class Coins(models.Model):
 	manufacture_date = models.DateField(verbose_name='Дата выпуска')
 	item_number = models.CharField(max_length=9, verbose_name='Каталожный номер') # http://tinyurl.com/kbh5fly
 
+
+	def __unicode__(self):
+		return self.coin_name
 	def admin_image(self):
 		return u'<img src="%s" style="width: 50%%; height:50%%"/>'%(self.photo_reverse.url)
 
