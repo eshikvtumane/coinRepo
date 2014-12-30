@@ -37,9 +37,9 @@
 
             <table id="tbl_country" class="table">
                 {% for country in countries_user %}
-                <tr class='bg-info'>
+                <tr class='bg-info' id="{{ country.country }}">
                     <td class='flag'>
-                        <img src="{{ country.country__country_flag }}">
+                        <img src="/media/{{ country.country__country_flag }}">
                     </td>
                     <td>
                         <a href="{{ country.country }}">{{ country.country__country_name }}</a>
@@ -48,7 +48,7 @@
                         <a href="{{ country.country }}" class="btn btn-primary">Перейти</a>
                     </td>
                     <td>
-                        <a href="" class="btn btn-danger">Удалить</a>
+                        <button class="btn btn-danger" value="{{ country.country }}" onclick="deleteCountry(this);">Удалить</button>
                     </td>
                 </tr>
                 {% endfor %}
