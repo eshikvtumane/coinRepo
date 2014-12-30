@@ -32,6 +32,10 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, '/users/templates/auth'),
 )
 
+'''FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, '/users/fixtures'),
+),'''
+
 LOGIN_URL = '/user/authentication'
 LOGIN_REDIRECT_URL = '/user/authentication'
 
