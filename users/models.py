@@ -44,7 +44,7 @@ class UserCoins(models.Model):
         #verbose_name_plural = _(u'Монеты пользователя')
 
     user = models.ForeignKey(User) # , verbose_name=_(u'Пользователь')
-    coin_series = models.ForeignKey(Series) # , verbose_name=_(u'Серия')
+    coin_series = models.ForeignKey('UserSeries') # , verbose_name=_(u'Серия')
     coin = models.ForeignKey(Coins) # , verbose_name=_(u'Монета')
 
 # выбранные страны
@@ -64,7 +64,7 @@ class UserSeries(models.Model):
         #verbose_name_plural = _(u'Выбранные серии')
 
     user = models.ForeignKey(User) # , verbose_name=_(u'Пользователь')
-    user_country = models.ForeignKey(Countries) # , verbose_name=_(u'Страна')
+    user_country = models.ForeignKey('UserCountries') # , verbose_name=_(u'Страна')
     user_series = models.ForeignKey(Series) # , verbose_name=_(u'Серия')
 
 # описание монет
@@ -74,11 +74,12 @@ class UserCoinInfo(models.Model):
         #verbose_name = _(u'Информация о монете')
         #verbose_name_plural = _(u'Информация о монете')
 
+    user = models.ForeignKey(User)
     coin_user = models.ForeignKey('UserCoins') # , verbose_name=_(u'Монета')
     condition = models.ForeignKey('CoinsCondition') # , verbose_name=_(u'Состояние монеты')
     quantity = models.IntegerField() # verbose_name=_(u'Количество монет')
     mint = models.ForeignKey(Mints)
-    defect_type = models.OneToOneField('Defects')
+    defect_type = models.ForeignKey('Defects')
     note = models.CharField(max_length='255')
 
 class CoinsPhoto(models.Model):

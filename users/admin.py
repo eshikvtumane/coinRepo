@@ -3,7 +3,7 @@ from django.contrib import admin
 from users.models import Profile
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from users.models import Profile, UserCountries
+from users.models import Profile, UserCountries, UserSeries, UserCoins, Defects
 from django.conf import settings
 from os import path
 
@@ -57,8 +57,19 @@ class MyUserAdmin(admin.ModelAdmin):
 class UserCountriesAdmin(admin.ModelAdmin):
     fields = ['country', 'user']
 
+class UserSeriesAdmin(admin.ModelAdmin):
+    fields = ['user', 'user_country', 'user_series']
+
+class UserCoinsAdmin(admin.ModelAdmin):
+    fields = []
+
+class DefectsAdmin(admin.ModelAdmin):
+    fields = ['defect_name']
 
 admin.site.unregister(User)
 #admin.site.register(User, UserAdmin)
 admin.site.register(User, MyUserAdmin)
 admin.site.register(UserCountries, UserCountriesAdmin)
+admin.site.register(UserSeries, UserSeriesAdmin)
+admin.site.register(UserCoins, UserCoinsAdmin)
+admin.site.register(Defects, DefectsAdmin)
