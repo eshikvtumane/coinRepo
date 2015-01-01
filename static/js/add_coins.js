@@ -33,6 +33,11 @@ function deleteCoinInfo(elem){
         var quantity = document.getElementById('q-'+coin).value;
         console.log(quantity);
 
+        img_id = '#btn-' + coin;
+        console.log('======');
+        $(img_id).attr('src', '/static/gif/ajax-loader.gif');
+        console.log('======');
+
         $.ajax({
             type: 'GET',
             url: '/user/coininfo/change/',
@@ -43,10 +48,19 @@ function deleteCoinInfo(elem){
             success: function(data){
                 if(data != 500){
                     console.log('OK');
+                    infoPopup('#popup');
                 }
                 else{
                     console.log('Fail');
+                    infoPopup('#popup-error');
                 }
+
+                $(img_id).attr('src', '/static/gif/refresh.png');
             }
         });
+    }
+
+    function infoPopup(id){
+        $(id).delay(100).fadeIn();
+        $(id).delay(2000).fadeOut(1000);
     }

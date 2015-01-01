@@ -5,6 +5,10 @@
 Монеты пользователя - {{ coin.coin_name }}
 {% endblock %}
 
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+{% endblock %}
+
 {% block scripts %}
     <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
 <!-- Change design select element -->
@@ -24,25 +28,32 @@
     {% endfor %}
 </div>
 
+<div class="container">
+    <div style="width: 58em; float: left" class="col-md-9">
+        <h1>{{ coin.coin_name }}</h1>
+        <div>
+            <img class='over' src="{{ coin.photo_obverse }}">
+            <img class='over' src="{{ coin.photo_reverse }}">
+        </div>
+        <div style="margin-top: 3ex;">
+            <a href="/coins/catalog/city/{{ country }}/{{ coin.id }}" target="_blank" style="height: 3ex; font-size: 6ex;" class="center btn btn-success btn-large">Подробнее о монете</a>
+        </div>
 
-<div style="width: 58em; float: left">
-    <h1>{{ coin.coin_name }}</h1>
-    <img src="{{ coin.photo_obverse }}">
-    <img src="{{ coin.photo_reverse }}">
-    <a href="/coins/catalog/city/{{ country }}/{{ coin.id }}" target="_blank" class="btn btn-success">Подробнее о монете</a>
-</div>
+    </div>
 
-       <div id="addCoinInfo" style="width:20em; float: right">
-           <input type="button" class="btn btn-success" value="Добавьте описание монеты" id="showForm">
+
+       <div id="addCoinInfo"  class="col-md-3 alert alert-warning infobox">
+
            <form method="post">
                {% csrf_token %}
+               <h4 class="alert alert-info" id="showForm">Добавьте описание монеты</h4>
                 <input type="text" hidden="true" value="{{ coin.id }}" name="coin_id">
                 <div name="add">
-                    <div>
-                        <label></label>
+                    <div class="item_padding">
+                        <label>Введите количество монет</label>
                         <input type="number" min="1" required="true" class="form-control" placeholder="Введите количество" name="quantity">
                     </div>
-                    <div>
+                    <div class="item_padding">
                         <label>Выберите монетный двор</label>
                         <select class="chosen-select" name="mint">
                             {% for mint in mints %}
@@ -51,18 +62,17 @@
                         </select>
                     </div>
 
-                    <div>
+                    <div class="item_padding">
                         <label>Выберите состояние монеты</label>
 
                         <select class="chosen-select" data-placeholder="Выберите состояние монеты" name="condition" required="true">
-                            <option value=""></option>
                             {% for condition in conditions %}
                                 <option value="{{ condition.id}}">{{ condition.condition_name }} ({{ condition.condition_abbr }})</option>
                             {% endfor %}
                         </select>
                     </div>
 
-                    <div>
+                    <div class="item_padding">
                         <label>Выберите брак</label> <br>
                         <select name="defect" class="chosen-select">
                             {% for defect in defects%}
@@ -72,17 +82,21 @@
                     </div>
 
 
-                    <div>
+                    <div class="item_padding">
                         <label>Примечание</label>
                         <textarea name="note" aria-multiline="5" cols="10" class="form-control"></textarea>
                     </div>
 
                 </div>
-                <input type="submit" value="Добавить описание" class="btn btn-primary">
+                <input type="submit" value="Добавить описание" class="btn btn-primary" style="margin-top: 3ex;">
             </form>
        </div>
+</div>
 
-    <div style="100%">
+    <div class="container" style="margin-top: 10ex">
+        <div id="popup" style="display:none; position: absolute;" class="alert alert-success" role="alert">Количество монет успешно обновлено</div>
+        <div id="popup-error" style="display:none; position: absolute;" class="alert alert-danger" role="alert">Произошла ошибка. Попробуйте обновить значение позднее.</div>
+
         {% if uci %}
             <table class="table">
                 <tr>
@@ -101,6 +115,7 @@
                     <th>
                         Состояние монеты
                     </th>
+                    <th></th>
                 </tr>
                 {% for info in uci %}
                     <tr id="{{ info.id }}">
@@ -108,7 +123,7 @@
                             <input id="q-{{ info.id }}" type="number" min="1" required value="{{ info.quantity }}" class="form-control">
                         </td>
                         <td style="width:10%" >
-                            <button value="{{ info.id }}" title="Обновить количество монет" onclick="quantityRefresh(this)"><img src="{% static 'gif/refresh.png' %}" class="refresh"></button>
+                            <button value="{{ info.id }}" title="Обновить количество монет" onclick="quantityRefresh(this)"><img id="btn-{{ info.id }}" src="{% static 'gif/refresh.png' %}" class="refresh"></button>
                         </td>
                         <td>
                             {{ info.mint__mint_abbreviation }}
