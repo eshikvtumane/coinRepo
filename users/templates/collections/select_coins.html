@@ -19,6 +19,14 @@
 
 {% block content %}
     <div>
+        <a href="/user/collections/">Страны</a> /
+        {% for c in country %}
+            <a href="/user/collections/{{ c.id }}">{{ c.country_name }}</a> /
+            <a href="/user/collections/{{ s.country__id }}/{{ s.id }}">{{ s.series_name }}</a>
+        {% endfor %}
+    </div>
+
+    <div>
         <label>Серия: </label>
         <label>{{ series_name }}</label>
         <label id="series_id" hidden="True">{{ series }}</label>
