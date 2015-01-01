@@ -132,7 +132,7 @@ def insertCoins(con, countries, wb):
 
 		qua = quanties_rus[ws.row_values(i)[15]]
 		for q in quanties:
-			if q[1].decode('utf-8') == qua:
+			if q[1] == qua:
 				query += (q[0],)
 				break
 
