@@ -8,52 +8,84 @@
             <label>Серия:</label>
             <label>{{ coin.0.series__series_name }}</label>
         </div>
-    <img src="{{ coin.0.photo_obverse }}" width="20%" height="20%">
-    <img src="{{ coin.0.photo_reverse }}" width="20%" height="20%">
 
-    <div id="info_box">
+    <div class="container">
+        <div class="col-sm-6">
+            <div class="span7 text-center">
+                <img src="{{ coin.0.photo_obverse }}" width="40%" height="40%">
+                <img src="{{ coin.0.photo_reverse }}" width="40%" height="40%">
+            </div>
+            <div style="padding-top: 3ex">
+                {% if user.is_authenticated %}
+                        {% if user_coin  %}
+                            {% for c in user_coin %}
+                                <div class="span7 text-center">
+                                    <a class='btn btn-primary' href="user/collections/{{ country }}/{{ c.coin_series__user_series }}/{{ c.coin }}">Перейти в коллекцию</a>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <form action="/coins/catalog/city/{{ country }}/{{ coin.0.series }}/{{ coin.0.id }}/" method="POST">
+                                {% csrf_token %}
+                                <div class="span7 text-center">
+                                    <input class="btn btn-success" type="submit" value="Добавить в коллекцию">
+                                </div>
 
-        <div>
-            <label>Номинал:</label>
-            <label>{{ coin.0.rate }} {{ coin.0.denominal }}</label>
-        </div>
-        <div>
-            <label>Качество чеканки:</label>
-            <label>{{ coin.0.quality__quality_coinage }}</label>
-        </div>
-        <div>
-            <label>Содержание химически чистого металла не менее (гр):</label>
-            <label>{{ coin.0.chemistry }}</label>
-        </div>
-        <div>
-            <label>Вес (гр):</label>
-            <label>{{ coin.0.coin_weight }}</label>
-        </div>
-        <div>
-            <label>Диаметр (мм):</label>
-            <label>{{ coin.0.coin_diameter }}</label>
-        </div>
-        <div>
-            <label>Толщина (мм):</label>
-            <label>{{ coin.0.coin_thickness }}</label>
-        </div>
-        <div>
-            <label>Тираж:</label>
-            <label>{{ coin.0.coin_circulation }}</label>
-        </div>
-        <div>
-            <label>Дата выпуска:</label>
-            <label>{{ coin.0.manufacture_date }}</label>
-        </div>
-        <div>
-            <label>Каталожный номер:</label>
-            <label>{{ coin.0.item_number }}</label>
-        </div>
-        <div>
-            <a href="{{ coin.0.link_cbr }}">Монета на сайте ЦБР</a>
-        </div>
+                            </form>
+                        {% endif %}
 
+                {% endif %}
+
+            </div>
+
+        </div>
+        <div id="info_box"  class="col-sm-6">
+
+            <div>
+                <label>Номинал:</label>
+                <label>{{ coin.0.rate }} {{ coin.0.denominal }}</label>
+            </div>
+            <div>
+                <label>Качество чеканки:</label>
+                <label>{{ coin.0.quality__quality_coinage }}</label>
+            </div>
+            {% if coin.0.chemistry %}
+                <div>
+                    <label>Содержание химически чистого металла не менее (гр):</label>
+                    <label>{{ coin.0.chemistry }}</label>
+                </div>
+            {% endif %}
+            <div>
+                <label>Вес (гр):</label>
+                <label>{{ coin.0.coin_weight }}</label>
+            </div>
+            <div>
+                <label>Диаметр (мм):</label>
+                <label>{{ coin.0.coin_diameter }}</label>
+            </div>
+            <div>
+                <label>Толщина (мм):</label>
+                <label>{{ coin.0.coin_thickness }}</label>
+            </div>
+            <div>
+                <label>Тираж:</label>
+                <label>{{ coin.0.coin_circulation }}</label>
+            </div>
+            <div>
+                <label>Дата выпуска:</label>
+                <label>{{ coin.0.manufacture_date }}</label>
+            </div>
+            <div>
+                <label>Каталожный номер:</label>
+                <label>{{ coin.0.item_number }}</label>
+            </div>
+            <div>
+                <a href="{{ coin.0.link_cbr }}">Монета на сайте ЦБР</a>
+            </div>
+
+        </div>
     </div>
+
+
 
     <div id="description">
         <h3>Описание монеты</h3>

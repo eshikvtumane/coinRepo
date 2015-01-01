@@ -10,6 +10,7 @@ import json
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
 from models import Countries, Series, Qualities, Metals, Coins, Mints, CoinToMint
+from users.models import UserCoins, UserCountries, UserSeries
 
 from django.db.models import Q # http://proft.me/2011/01/22/polnotekstovyj-poisk-v-django/
 import operator
@@ -128,9 +129,31 @@ class SearchView(View):
 
 class CoinSelectView(View):
     def get(self, request, country_id, coin_id):
+        rend = self.get_coin_info(request, country_id, coin_id)
+        return rend
+
+    def post(self, request, country_id, series_id, coin_id):
+        user = request.user
+        country = Countries.objects.get(pk = country_id)
+        series = Series.objects.get(pk = series_id)
+        coin = Coins.objects.get(pk = coin_id)
+
+        uc, created = UserCountries.objects.get_or_create(user = user, country = country)
+        us, created = UserSeries.objects.get_or_create(user = user, user_country = uc, user_series = series)
+        u_coin = UserCoins.objects.get_or_create(user = user, coin_series = us, coin = coin)
+
+        rend = self.get_coin_info(request, country_id, coin_id)
+        return rend
+
+    def get_coin_info(self, request, country_id, coin_id):
         template = 'catalog/coin_descr.html'
-        coin_id = int(coin_id)
-        description = Coins.objects.filter(id=coin_id, country=country_id).values('coin_name', 'series__series_name', 'rate', 'denominal', 'coin_weight', 'coin_thickness', 'coin_diameter', 'photo_obverse', 'photo_reverse', 'manufacture_date', 'item_number', 'link_cbr', 'coin_circulation', 'chemistry', 'description_observe', 'description_reverse', 'painter', 'sculptor', 'coin_herd', 'quality__quality_coinage')
+        description = Coins.objects.filter(id=coin_id, country=country_id).values('id', 'series', 'coin_name', 'series__series_name', 'rate', 'denominal', 'coin_weight', 'coin_thickness', 'coin_diameter', 'photo_obverse', 'photo_reverse', 'manufacture_date', 'item_number', 'link_cbr', 'coin_circulation', 'chemistry', 'description_observe', 'description_reverse', 'painter', 'sculptor', 'coin_herd', 'quality__quality_coinage')
         mints = CoinToMint.objects.filter(coin_id=coin_id).values('mint__mint_name')
-        args = RequestContext(request, {'coin': description, 'mints': mints})
+
+        user_coins = UserCoins.objects.filter(user = request.user, coin = coin_id).values('coin', 'coin_series__user_series')
+
+        args = RequestContext(request, {'coin': description, 'mints': mints, 'user_coin': user_coins, 'country': country_id})
         return render_to_response(template, args)
+
+# добавление монеты в коллекцию пользователя
+
