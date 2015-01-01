@@ -19,17 +19,35 @@
 {% endblock %}
 
 {% block content %}
-<h1>Добавленные страны</h1>
-    <div>
-        <h3>Добавьте страну:</h3>
-        <select id="countries" class="chosen-select" data-placeholder="Выберите страну">
-            <option selected="selected" value="-1" hidden="True"></option>
-            {% for country in countries %}
-                <option value="{{ country.id }}">{{ country.country_name }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" id="btnAdd" value="Добавить" class="btn btn-success">
+<div class="container">
+    <div class="col-sm-9">
+        <h1>Добавленные страны</h1>
+        <div>
+            <h3>Добавьте страну:</h3>
+            <select id="countries" class="chosen-select" data-placeholder="Выберите страну">
+                <option selected="selected" value="-1" hidden="True"></option>
+                {% for country in countries %}
+                    <option value="{{ country.id }}">{{ country.country_name }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" id="btnAdd" value="Добавить" class="btn btn-success">
+        </div>
     </div>
+
+    <div class="col-sm-3">
+        <form action="import/" style="margin-top:10%">
+            <button type="submit">
+                <img src='/media/xls.png' height="80px" width="80px"><br/>
+                Экспортировать <br/>
+                коллекцию
+            </button>
+        </form>
+    </div>
+
+</div>
+
+
+
 
 <h3>Страны, добавленные пользователем</h3>
     <div id="usr_countries">

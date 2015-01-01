@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from users import *
-from users.views import UserRegistration, UserAuth, UserLogout, UserInfo, UserCountryView, UserSeriesView, UserCoinsView, UserCoinInfoView, SeriesDeleteView, CountryDeleteView, CoinDeleteView,CoinInfoChangeView
+from users.views import UserRegistration, UserAuth, UserLogout, UserInfo, UserCountryView, UserSeriesView, UserCoinsView, UserCoinInfoView, SeriesDeleteView, CountryDeleteView, CoinDeleteView,CoinInfoChangeView, GenerateXlsView
 
 urlpatterns = patterns('',
     # Examples:
@@ -33,4 +33,8 @@ urlpatterns = patterns('',
     url(r'coin/delete/$', CoinDeleteView.as_view()),
 
     url(r'coininfo/change/$', CoinInfoChangeView.as_view()),
+
+
+    # import in XLS
+    url(r'import/$', GenerateXlsView.as_view()),
 )

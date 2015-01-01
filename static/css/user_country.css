@@ -25,3 +25,10 @@
 .flag{
     width: 10%
 }
+
+
+input #submit{
+    background: url('media/xls.png');
+    padding-left: 16px;
+    height: 16px;
+}

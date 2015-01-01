@@ -17,6 +17,8 @@ from users.models import Profile, UserCountries, UserSeries as US, UserCoins, Us
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+import xlwt
+import datetime
 
 # Create your views here.
 
@@ -171,7 +173,7 @@ class UserSeriesView(View):
         series = Series.objects.filter(country=country_id)
         try:
             # ищем страны
-            country = UserCountries.objects.get(country=country_id)
+            country = UserCountries.objects.get(country=country_id, user = request.user)
 
             # ищем страны, которые добавил пользователь и отправляем всё клиенту
             try:
@@ -190,7 +192,7 @@ class UserSeriesView(View):
         series_id = request.POST['series_id']
         country_id = request.POST['country_id']
         s = Series.objects.get(pk=series_id)
-        c = UserCountries.objects.get(country=country_id)
+        c = UserCountries.objects.get(country=country_id, user = request.user)
 
         try:# если пользователь уже добавил серию
             US.objects.get(user_series=s,user = request.user, user_country=c)
@@ -208,6 +210,9 @@ class UserCoinsView(View):
         args = {}
         args['series'] = series_id
 
+        country = Countries.objects.filter(id=country_id).values('id', 'country_name')
+        args['country'] = Countries.objects.filter(id=country_id).values('id', 'country_name')
+
         try:
             args['series_name'] = Series.objects.get(id = series_id)
         except Series.DoesNotExist:
@@ -215,7 +220,7 @@ class UserCoinsView(View):
 
         try:
             coins = Coins.objects.filter(series=series_id).values('coin_name', 'id').order_by('coin_name')
-            series = US.objects.get(user_series = series_id)
+            series = US.objects.get(user_series = series_id, user = request.user)
             args['coins'] = coins
             try: # делаем выборку монет, которые добавил пользователь
                 user_coins = UserCoins.objects.filter(user=request.user, coin_series=series).values('coin__photo_reverse', 'coin__coin_name', 'coin__id').order_by('coin__coin_name')
@@ -236,7 +241,7 @@ class UserCoinsView(View):
 
         # Делаем выборку по монетам и сериям
         coins_obj = Coins.objects.filter(id__in=coins)
-        series_obj = US.objects.get(user_series=series)
+        series_obj = US.objects.get(user_series=series, user = request.user)
 
         # генерируем массив пользовательских монет
         usr_objs = [ UserCoins(user=request.user, coin_series=series_obj, coin=coin) for coin in coins_obj ]
@@ -355,3 +360,103 @@ class CoinInfoChangeView(View):
             return HttpResponse('200', 'plain/text')
         except:
             return HttpResponse('500', 'plain/text')
+
+
+class GenerateXlsView(View):
+    def get(self, request):
+        return self.generateUserCollection(request.user)
+
+    def generateUserCollection(self, user):
+        wb = xlwt.Workbook(encoding='utf-8')
+        aligment = xlwt.easyxf('align: vert center;')
+        header_style = xlwt.easyxf('align: horiz center; font: bold on')
+        aligment_horiz = xlwt.easyxf('align: horiz center;')
+        series_style = xlwt.easyxf('font: name Arial, height 300, bold on; align: vert center, horiz center; pattern: pattern solid, fore_color aqua;')
+        row_num = 0 # счетчик для строк
+
+        columns = [
+            u'Название монеты',
+            u'Монетный двор',
+            u'Количество',
+            u'Качество',
+            u'Дефекты монеты'
+        ]
+
+# Выборка городов
+        uc = UserCountries.objects.filter(user = user).values('id', 'country__country_name')
+
+
+
+        count_letter_coins_name = 0 # счетчик для хранения длины самого длинного названия монеты
+        count_letter_defect = 0 # счетчик для хранения длины самого длинного названия дефекта
+
+        for country in uc:
+            ws = wb.add_sheet(country['country__country_name'])
+
+            # write header table
+            for count, col in enumerate(columns):
+                ws.write(row_num, count, col, header_style)
+            ws.col(1).width = 256 * 20
+
+            row_num += 3
+
+            us = US.objects.filter(user = user, user_country = country['id']).values('id', 'user_series__series_name')
+
+
+            # Выборка серий
+            for series in us:
+                ws.write_merge(row_num, row_num, 0, 4, u'Серия: %s' % series['user_series__series_name'], series_style)
+                current_row = ws.row(row_num)
+                current_row.height_mismatch = True
+                current_row.height = 256 * 2
+                row_num += 1
+
+
+                u_coin = UserCoins.objects.filter(user = user, coin_series = series['id']).values('id', 'coin__coin_name')
+                # Выборка монет
+                for coin in u_coin:
+                    uci = UserCoinInfo.objects.filter(user = user, coin_user = coin['id']).values('quantity', 'condition__condition_abbr', 'condition__condition_color', 'mint__mint_abbreviation', 'defect_type__defect_name')
+
+                    # Выборка информации о монетах
+                    for info in uci:
+                        ws.write(row_num, 1, info['mint__mint_abbreviation'], aligment_horiz)
+                        ws.write(row_num, 2, info['quantity'], aligment_horiz)
+                        ws.write(row_num, 3, info['condition__condition_abbr'], aligment_horiz)
+                        ws.write(row_num, 4, info['defect_type__defect_name'], aligment_horiz)
+
+                        if count_letter_defect < len(info['defect_type__defect_name']):
+                            count_letter_defect = len(info['defect_type__defect_name'])
+                        row_num += 1
+
+                    # количество разновидностей монет у пользователя
+                    length_coins_queryset = len(uci)
+
+                    # если разновидности есть, то вычисляем, сколько надо объединить ячеек
+                    if length_coins_queryset != 0:
+                        row_start = row_num - len(uci)
+                        row_end = row_num - 1
+                    else: # если разновидностей нет, то и вычислять ничего не надо
+                        row_end = row_num
+                        row_start = row_end
+                        row_num += 1 # т.к. количество разновидностей монет = 0, то необходимо увеличить счётчик на 1 (иначе появится исключениео том, что происходит перезапись ячейки).
+
+                    ws.write_merge(row_start, row_end, 0, 0, coin['coin__coin_name'], aligment) # объединяем ячейки и добавляем название монеты
+
+                    # высчитываем кол-во символов в строке для расчёта длины колонки
+                    if len(coin['coin__coin_name']) > count_letter_coins_name:
+                        count_letter_coins_name = len(coin['coin__coin_name'])
+                row_num += 1
+
+        ws.col(0).width = 256 * (count_letter_coins_name + 1)
+        ws.col(4).width = 256 * (count_letter_defect + 1)
+
+        name_file = '%s_%s' % (user.username, str(datetime.datetime.today()))
+        response = self.createResponse(name_file)
+        wb.save(response)
+        return response
+
+
+    def createResponse(self, name_file):
+        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=%s.xls' % name_file
+        return response

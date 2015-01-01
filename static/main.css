@@ -10,3 +10,23 @@ body {
   width: 2em;
   height: 2em;
 }
+
+.item_padding{
+  margin-top: 2 ex;
+}
+
+.over img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.infobox{
+  border: 2px;
+}
