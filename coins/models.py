@@ -96,8 +96,8 @@ class Coins(models.Model):
 
 	coin_name = models.CharField(max_length='255', verbose_name=_(u'Название монеты'))
 	link_cbr = models.URLField(verbose_name=_(u'Сайт банка')) # link on description coin on site Central Bank of Russia
-	description_observe = models.CharField(max_length='255', verbose_name='Описание аверса')
-	description_reverse = models.CharField(max_length='255', verbose_name='Описание реверса')
+	description_observe = models.CharField(max_length='10000', verbose_name='Описание аверса')
+	description_reverse = models.CharField(max_length='10000', verbose_name='Описание реверса')
 	painter = models.CharField(max_length='255', verbose_name='Художник(и)')
 	sculptor = models.CharField(max_length='255', verbose_name='Скульптор(ы)')
 	coin_herd = models.CharField(max_length='255', blank=True, verbose_name='Описание гурта') # edge of a coin http://tinyurl.com/m56ms6y

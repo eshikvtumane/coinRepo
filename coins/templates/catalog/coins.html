@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-
+Каталог монет
 {% endblock %}
 
 {% block styles %}
@@ -49,41 +49,45 @@ http://esimakin.github.io/twbs-pagination/-->
                 <input type="text" id="search_name" class="form-control span3" data-provide="typeahead">
             </div>
 
-            <div class="col-md-4">
-                <label>Серия:</label>
-                <select id="series" class="chosen-select" data-placeholder="Выберите серию" style='height: 100%;'>
-                    <option selected="selected" value=""></option>
-                    {% for s in series %}
-                        <option value="{{ s.id }}">{{ s.series_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="col-md-4">
-                <label>Качество</label>
-                <select id="qualities" class="chosen-select" data-placeholder="Select qualities" style='height: 100%;'>
-                    <option value=""></option>
-                    {% for q in qualities %}
-                        <option value="{{ q.id }}">{{ q.quality_coinage }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div>
+            <!-- Дополнительные параметры поиска -->
+            <div style="padding-top: 3ex;">
                 <div class="col-md-4">
-                    <label>Металл:</label>
-                    <select id="metals" class="chosen-select" data-placeholder="Select metal" style='height: 100%;'>
-                        <option value=""></option>
-                        {% for m in metals %}
-                            <option value="{{ m.id }}">{{ m.metal_description }}</option>
+                    <label>Серия:</label>
+                    <select id="series" class="chosen-select" data-placeholder="Выберите серию" style='height: 100%;'>
+                        <option selected="selected" value=""></option>
+                        {% for s in series %}
+                            <option value="{{ s.id }}">{{ s.series_name }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
+                <div class="col-md-4">
+                    <label>Качество</label>
+                    <select id="qualities" class="chosen-select" data-placeholder="Выберите качество" style='height: 100%;'>
+                        <option value=""></option>
+                        {% for q in qualities %}
+                            <option value="{{ q.id }}">{{ q.quality_coinage }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <div class="col-md-4">
+                        <label>Металл:</label>
+                        <select id="metals" class="chosen-select" data-placeholder="Выберите металл" style='height: 100%;'>
+                            <option value=""></option>
+                            {% for m in metals %}
+                                <option value="{{ m.id }}">{{ m.metal_description }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
             </div>
-            <div style="margin:10%">
-                <input type="button" id="btnSearch" value="Submit" class="btn btn-success">
-                <input type="button" id="btnReset" value="Reset" class="btn btn-warning">
+
+            <div class="span7 text-center" style="margin:10%">
+                <input type="button" id="btnSearch" value="Найти" class="btn btn-success">
+                <input type="button" id="btnReset" value="Сброс параметров" class="btn btn-warning">
             </div>
 
         </form>

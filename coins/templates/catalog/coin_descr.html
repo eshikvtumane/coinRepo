@@ -1,20 +1,65 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block title %}
+    Монеты на! - {{ coin.0.coin_name }}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
+
+            <script type="text/javascript">
+                settings = {
+                element: document.getElementById('ya-share'),
+                theme: "counter",
+                l10n: "ru",
+                image: "http://127.0.0.1:8000{{ coin.0.photo_reverse }}",
+                link: "http://127.0.0.1:8000{{ request.get_full_path }}",
+                title: "Монеты на! - {{ coin.0.series__series_name }}",
+                description:  "{{ coin.0.rate }} {{ coin.0.denominal  }}, тираж - {{ coin.0.coin_circulation }} штук, дата выпуска - {{ coin.0.manufacture_date }}.",
+                elementStyle: {
+                    type: "big",
+                    quickServices:["vkontakte","facebook","twitter","odnoklassniki","moimir","gplus"]
+                }
+            };
+            var ya= new Ya.share(settings);
+            </script>
+{% endblock %}
+
 {% block content %}
 
     <h1>{{ coin.0.coin_name }}</h1>
-    <div>
+    <div style="margin-top: 3ex;">
+        {% if coin.0.series__series_name %}
             <label>Серия:</label>
             <label>{{ coin.0.series__series_name }}</label>
-        </div>
+        {% endif %}
+    </div>
 
-    <div class="container">
+    <div class="container" style="margin-top: 3ex;">
         <div class="col-sm-6">
             <div class="span7 text-center">
                 <img src="{{ coin.0.photo_obverse }}" width="40%" height="40%">
                 <img src="{{ coin.0.photo_reverse }}" width="40%" height="40%">
             </div>
+
+            <!-- share info -->
+            <div id="social" style="margin-top: 2ex;"><!--//127.0.0.1:8000{{ request.get_full_path }} -->
+                <h4>Поделиться:</h4>
+                <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="big" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"
+                            data-yashareImage="{{ coin.0.photo_obverse }}"
+                            data-yashareTitle="Монеты на! - {{ coin.0.series__series_name }}"
+                            data-yashareDescription="{{ coin.0.rate }} {{ coin.0.denominal  }}, тираж - {{ coin.0.coin_circulation }} штук, дата выпуска - {{ coin.0.manufacture_date }}."
+                        >
+
+                </div>
+            </div>
+
+            <div id="ya-share">
+
+            </div>
+
+
             <div style="padding-top: 3ex">
                 {% if user.is_authenticated %}
                         {% if user_coin  %}
