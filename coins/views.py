@@ -9,7 +9,7 @@ import json
 
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
-from models import Countries, Series, Qualities, Metals, Coins, Mints, CoinToMint
+from models import Countries, Series, Qualities, Metals, Coins, Mints, CoinToMint, Prices
 from users.models import UserCoins, UserCountries, UserSeries
 
 from django.db.models import Q # http://proft.me/2011/01/22/polnotekstovyj-poisk-v-django/
@@ -20,6 +20,9 @@ import operator
 #http://django-haystack.readthedocs.org/en/latest/tutorial.html
 from haystack.query import SearchQuerySet
 import json
+
+# charts
+from chartit import DataPool, Chart
 
 #
 # Create your views here.
@@ -145,15 +148,75 @@ class CoinSelectView(View):
         rend = self.get_coin_info(request, country_id, coin_id)
         return rend
 
+# formind chart
+    def draw_chart(self, coin_obj):
+        #Step 1: Create a DataPool with the data we want to retrieve.
+        data = DataPool(
+            series=
+            [{
+                'options': {
+                  'source': Prices.objects.filter(coin = coin_obj).values('price', 'date')
+                },
+                'terms':[
+                    'date',
+                    'price'
+                ]}
+            ])
+        #Step 2: Create the Chart object
+        cht = Chart(
+            datasource = data,
+            series_options =
+                [{
+                    'options': {
+                        'type': 'line',
+                        'stacking': False},
+                    'terms':{
+                        'date':[
+                            'price'
+                        ]
+                    }
+                }],
+            chart_options=
+            {
+                'title':{
+                    'text':u'Курс Монета/руб'
+                },
+                'xAxis':{
+                    'title':{
+                        'text': u'Дата'
+                    }
+                },
+                'yAxis':{
+                  'title':{
+                      'text': u'Цена'
+                  }
+                },
+                'legend': {
+                    'enabled': False
+                }
+            }
+        )
+
+        return cht
+
     def get_coin_info(self, request, country_id, coin_id):
         template = 'catalog/coin_descr.html'
         description = Coins.objects.filter(id=coin_id, country=country_id).values('id', 'series', 'coin_name', 'series__series_name', 'rate', 'denominal', 'coin_weight', 'coin_thickness', 'coin_diameter', 'photo_obverse', 'photo_reverse', 'manufacture_date', 'item_number', 'link_cbr', 'coin_circulation', 'chemistry', 'description_observe', 'description_reverse', 'painter', 'sculptor', 'coin_herd', 'quality__quality_coinage')
         mints = CoinToMint.objects.filter(coin_id=coin_id).values('mint__mint_name')
 
-        user_coins = UserCoins.objects.filter(user = request.user, coin = coin_id).values('coin', 'coin_series__user_series')
+        coin_obj = Coins.objects.get(pk = coin_id)
+        prices = list(Prices.objects.filter(coin = coin_obj))
+        args = {'coin': description, 'mints': mints, 'country': country_id, 'price':prices}
 
-        args = RequestContext(request, {'coin': description, 'mints': mints, 'user_coin': user_coins, 'country': country_id})
-        return render_to_response(template, args)
+        try:
+            args['user_coin'] = UserCoins.objects.filter(user = request.user, coin = coin_id).values('coin', 'coin_series__user_series')
+        except:
+            args['user_coin'] = []
+
+        args['chart'] = self.draw_chart(coin_obj)
+        rc = RequestContext(request, args)
+
+        return render_to_response(template, rc)
 
 # добавление монеты в коллекцию пользователя
 

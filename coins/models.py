@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 # Create your models here.
 
 
@@ -135,6 +136,18 @@ class CoinToMint(models.Model):
 
 	def __unicode__(self):
 		return self.coin.coin_name
+
+# Цены на монеты
+class Prices(models.Model):
+	class Meta:
+		db_table = 'Price'
+		verbose_name = 'Цена'
+		verbose_name_plural = 'Цены'
+
+	coin = models.ForeignKey('Coins')
+	price = models.FloatField()
+	link = models.URLField()
+	date = models.DateField(default=timezone.now, null=True, blank=True)
 
 
 

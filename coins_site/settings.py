@@ -52,6 +52,8 @@ INSTALLED_APPS = (
     'bootstrapform',
     'whoosh',
     'haystack',
+    'django.contrib.humanize',
+    'chartit',
     #'django_ajax',
     # applications
     'main',
