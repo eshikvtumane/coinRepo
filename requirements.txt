@@ -6,3 +6,4 @@ django-haystack
 gunicorn
 django-grappelli
 xlwt
+chartit

@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from django import forms
 from django.contrib import admin
-from coins.models import Countries,Series,Coins,CoinToMint,Metals,Mints#,Denominals
+from coins.models import Countries,Series,Coins,CoinToMint,Metals,Mints, Prices
 from django.utils.translation import gettext_lazy as _
 
 class CountriesAdmin(admin.ModelAdmin):
@@ -80,6 +80,9 @@ class MintsAdmin(admin.ModelAdmin):
 #class DenominalsAdmin(admin.ModelAdmin):
  #   fields = ["denominal_name","denominal_country"]
 
+class PricesAdmin(admin.ModelAdmin):
+    fields = ['coin', 'price', 'link', 'date']
+
 
 admin.site.register(Countries,CountriesAdmin)
 admin.site.register(Series,SeriesAdmin)
@@ -87,4 +90,5 @@ admin.site.register(Coins,CoinsAdmin)
 #admin.site.register(CoinToMint,CoinToMintAdmin)
 admin.site.register(Metals,MetalsAdmin)
 admin.site.register(Mints,MintsAdmin)
+admin.site.register(Prices, PricesAdmin)
 #admin.site.register(Denominals,DenominalsAdmin)
