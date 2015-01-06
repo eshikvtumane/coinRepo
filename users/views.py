@@ -255,6 +255,7 @@ class UserCoinsView(View):
 
 # добавляем разновидности монет
 class UserCoinInfoView(View):
+    @method_decorator(login_required)
     def get(self, request, country_id, series_id, coin_id):
         template = 'collections/add_coins.html'
         try:
@@ -264,6 +265,7 @@ class UserCoinInfoView(View):
         except UserCoins.DoesNotExist:
             return render_to_response(template, RequestContext(request))
 
+    @method_decorator(login_required)
     def post(self, request, country_id, series_id, coin_id):
         template = 'collections/add_coins.html'
         request_user = request.user
@@ -363,6 +365,7 @@ class CoinInfoChangeView(View):
 
 
 class GenerateXlsView(View):
+    @method_decorator(login_required)
     def get(self, request):
         return self.generateUserCollection(request.user)
 

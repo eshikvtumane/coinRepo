@@ -29,14 +29,14 @@
 </div>
 
 <div class="container">
-    <div style="width: 58em; float: left" class="col-md-9">
+    <div class="col-md-9">
         <h1>{{ coin.coin_name }}</h1>
-        <div>
+        <div class="span7 text-center" style="padding-top:3ex;">
             <img class='over' src="{{ coin.photo_obverse }}">
             <img class='over' src="{{ coin.photo_reverse }}">
         </div>
-        <div style="margin-top: 3ex;">
-            <a href="/coins/catalog/city/{{ country }}/{{ coin.id }}" target="_blank" style="height: 3ex; font-size: 6ex;" class="center btn btn-success btn-large">Подробнее о монете</a>
+        <div style="margin-top: 3ex;" class="span7 text-center">
+            <a href="/coins/catalog/city/{{ country }}/{{ coin.id }}" target="_blank" class="btn btn-success btn-large">Подробнее о монете</a>
         </div>
 
     </div>
