@@ -1,10 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}
+    Список желаний - {{ user.username }}
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
+
+
+{% endblock %}
+
+{% block content %}
+    <h1 align="center">Список желаний пользователя <b>{{ user.username }}</b></h1>
+    <div id="social" class="alert alert-info text-center">
+        <div id="description">
+            {% if user.username == username  and user.username %}
+                <h2>Расскажите друзьям, какие монеты вы хотите получить в подарок</h2>
+            {% else %}
+                <h2>Не знаете что подарить знакомому нумизмату?</h2>
+                <span style="font-size: 5ex;">Подарите монеты, которых у него нет!</span>
+            {% endif %}
+        </div>
+
+        <div>
+            <label>Поделиться в социальных сетях</label>
+            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="big" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir,gplus" data-yashareTheme="counter"
+                            data-yashareImage="{{ coin.0.photo_obverse }}"
+                            data-yashareTitle="Монеты на! - Список желаний пользователя {{ username }}"
+                            data-yashareDescription="Не знаете что подарить знакомому нумизмату? Подарите монеты, которых у него нет!"
+                        >
+
+                </div>
+        </div>
+
+
+
+    </div>
+    <div>
+        <table class="table">
+            {% for wl in wish_list %}
+                <tr>
+                    <td style="font-size: 4ex;">
+                        <a target="_blank" href="/coins/catalog/city/{{ wl.coin__country }}/{{ wl.coin__id }}">{{ wl.coin__coin_name }}</a>
+                    </td>
+                    <td>
+                        <a target="_blank" href="/coins/catalog/city/{{ wl.coin__country }}/{{ wl.coin__id }}"" class="btn btn-primary">Подробнее о монете</a>
+                    </td>
+                    <td>
+                        {% if user.username == username  and user.username %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="wish_id" value="{{ wl.id }}">
+                            <input type="submit" value="Убрать" class="btn btn-danger">
+                        </form>
+
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <h2>В списке нет ни одной монеты.</h2>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

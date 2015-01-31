@@ -9,6 +9,7 @@
 {% block scripts %}
     <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
     <script type="text/javascript" src="{% static 'highcharts/js/highcharts.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/wish_list/add_wish_list.js' %}"></script>
     {% load chartit %}
 
 {% endblock %}
@@ -16,9 +17,6 @@
 
 
 {% block content %}
-
-
-
 
     <div class="container" style="margin-top: 3ex; margin-bottom: 4ex;">
 
@@ -72,6 +70,17 @@
 
                             </form>
                         {% endif %}
+
+                    <div class="span7 text-center" style="margin-top: 2ex" id="wish_list_btn">
+                        {% for w in wish_list %}
+                            <label>Монета добавлена в список желаний</label>
+                        {% empty %}
+                            <a onclick="addWishList({{ coin.0.id }})" class="btn btn-warning" title="Добавьте монету в лист желаний и расскажите об этом друзьям!">Я хочу!</a>
+                        {% endfor %}
+                        <div id="error">
+
+                        </div>
+                    </div>
                 {% else %}
                 <div style="font-size:5ex; background-color: #e0e193;" class="span7 text-center">
                     <a target="_blank" style='vertical-align: middle;' href="/user/register/">Зарегистрируйтесь</a>, если хотите добавить монету в коллекцию.
@@ -232,5 +241,9 @@
             <div id="coins_chart" style="padding-top:3ex;" class="alert alert-info">{{ chart|load_charts:"coins_chart" }}</div>
         {% endif %}
     {% endwith %}
+
+    <div>
+
+    </div>
 
 {% endblock %}

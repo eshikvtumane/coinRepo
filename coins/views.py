@@ -9,7 +9,7 @@ import json
 
 from django.http import HttpResponse
 from django.views.generic import View, TemplateView
-from models import Countries, Series, Qualities, Metals, Coins, Mints, CoinToMint, Prices
+from models import Countries, Series, Qualities, Metals, Coins, Mints, CoinToMint, Prices, WishListModel
 from users.models import UserCoins, UserCountries, UserSeries
 
 from django.db.models import Q # http://proft.me/2011/01/22/polnotekstovyj-poisk-v-django/
@@ -23,6 +23,8 @@ import json
 
 # charts
 from chartit import DataPool, Chart
+from django.utils.decorators import method_decorator
+from  django.contrib.auth.decorators import login_required
 
 #
 # Create your views here.
@@ -91,7 +93,7 @@ class SearchView(View):
                 if series != '':
                     criterions.append(Q(series_id=series),)
                 if name != '':
-                    criterions.append(Q(coin_name=name),)
+                    criterions.append(Q(coin_name__contains=name),)
                 if qualities != '':
                     criterions.append(Q(quality_id=qualities),)
                 if metals != '':
@@ -213,10 +215,57 @@ class CoinSelectView(View):
         except:
             args['user_coin'] = []
 
+        try:
+            args['wish_list'] = WishListModel.objects.filter(user = request.user, coin = coin_id)
+        except:
+            args['wish_list'] = {}
+
         args['chart'] = self.draw_chart(coin_obj)
         rc = RequestContext(request, args)
 
         return render_to_response(template, rc)
 
 # добавление монеты в коллекцию пользователя
+
+# работа с монетами из списка желаний
+class WLView(View):
+    template = 'wish_list.html'
+    def get(self, request, username):
+        rc = self.request_context(request, username)
+        return render_to_response(self.template, rc)
+
+
+    def post(self, request, username):
+        wish_id = request.POST.get('wish_id')
+        try:
+            WishListModel.objects.get(pk=wish_id).delete()
+        except:
+            print 'Error delete'
+
+        rc = self.request_context(request, username)
+        return render_to_response(self.template, rc)
+
+    def request_context(self, request, username):
+        args = {}
+        wish_list = WishListModel.objects.filter(user_username = username).values('coin__coin_name', 'coin__country', 'coin__id', 'id')
+
+        args['wish_list'] = wish_list
+        args['username'] = username
+        return RequestContext(request, args)
+
+# добавление монеты в лист желаний
+class WishListView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        coin_id = int(request.GET.get('coin_id'))
+        user = request.user
+
+        coin_obj = Coins.objects.get(pk=coin_id)
+        try:
+            wish_list = WishListModel(user = user, coin = coin_obj, user_username = user.username)
+            wish_list.save()
+            return  HttpResponse('200', 'plain/text')
+        except:
+            return  HttpResponse('500', 'plain/text')
+
 
