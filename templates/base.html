@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
     {% block styles %}{% endblock %}
 
+
     <script src="{% static 'jquery/jquery-2.1.1.js' %}"></script>
     <script type="text/js" src='{% static "bootstrap/js/bootstrap.min.js" %}'></script>
     {% block scripts %}{% endblock %}
@@ -32,23 +33,39 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Монеты на!</a>
+          <a class="navbar-brand" href="/">Монеты на!</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#about">О сайте</a></li>
+            <li><a href="#contact">Контакты</a></li>
               <li><a href="/coins/catalog">Каталог монет</a></li>
-              {% if user.is_authenticated %}
-                <li><a href="">Здравствуйте, {{user.username}}!</a></li>
-                <li><a href="/user/collections">Коллекции</a></li>
-                <li><a href="/user/logout">Выход</a></li>
-              {% else %}
-                <li><a href="/user/authentication">Войти</a></li>
-                <li><a href="/user/register">Регистрация</a></li>
-              {% endif %}
+
           </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Settings</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="/coins/wish_list/{{ user.username }}">Список желаний</a></li>
+                    <li><a href="/shop/create_buy">Добавить лот</a></li>
+                    <li><a href="/shop/settings">Настройки</a></li>
+                    <li><a href="">Здравствуйте, {{user.username}}!</a></li>
+                    <li><a href="/user/collections">Коллекции</a></li>
+                    <li><a href="/user/logout">Выход</a></li>
+                {% else %}
+                    <li><a href="/user/authentication">Войти</a></li>
+                    <li><a href="/user/register">Регистрация</a></li>
+                {% endif %}
+            </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
@@ -63,10 +80,14 @@
 
 
     </div><!-- /.container -->
+    <footer class="footer" style="margin-top: 4ex;">
+        <div class="container">
+            <div style="vertical-align: middle;">
+                <label style="vertical-align: middle;">{% now 'Y' %} - &copy Монеты на!</label>
+            </div>
 
-    <div style="width:60%">
-        <h3>Footer</h3>
-    </div>
+        </div>
+    </footer>
 
 </body>
 </html>

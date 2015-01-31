@@ -1,5 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Это сайт.</h1>
+    <div class="jumbotron">
+      <h1>Эй, пацанчик!</h1>
+      <p>Это сайт для чётких пацанчиков.</p>
+      <p>Здесь ты можешь найти информацию по отработанным монеткам, а также вести их учёт.</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Ничё не понял ёпт, подробнее объясни на, хуё-моё.</a></p>
+    </div>
+
+<div id="news">
+    <h2>Новости</h2>
+
+    {% for n in news %}
+        <div>
+            <h4>{{ n.title }}</h4>
+            <div>
+               {{ n.article|safe }}
+            </div>
+            <div>
+                <span>
+                    <i>{{ n.pub_date|date }}</i>
+                </span>
+                <span>
+                    <a href="/news/{{ n.id }}">Подробнее</a>
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
