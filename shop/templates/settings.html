@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+    <div class="container">
+        <h1>Данные для оплаты</h1>
+        <form method="post" class="col-sm-5">
+            {% csrf_token %}
+            <div>
+                <label>Номер карты</label>
+                <input type="text" name='number_card' value="{{ pay.0.number_card }}"class="form-control">
+            </div>
+            <div>
+                <label>Номер счёта в Яндекс.Деньгах</label>
+                <input type="text" name='yandex_money' value="{{ pay.0.yandex_money }}"class="form-control">
+            </div>
+
+            <div>
+                <label>Номер счёта в Qiwi (телефон)</label>
+                <div class="input-group">
+                    <span class="input-group-addon">+7</span>
+                    <input type="text" name='phone' value="{{ pay.0.phone }}" class="form-control">
+                </div>
+
+            </div>
+
+            <input type="submit" value="Обновить" class="btn btn-success">
+        </form>
+    </div>
+
+{% endblock %}

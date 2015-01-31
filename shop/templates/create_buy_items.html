@@ -1,10 +1,93 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'custom/csrf_ajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'custom/search_coins_lots.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/add_lots.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container" style="padding-top: 2ex;">
+        <h1>Создание нового лота</h1>
+        <form action="get">
+
+            <div class="col-sm-12" style="padding-top: 2ex;">
+                <h3>Шаг 1: Добавление монет в лот</h3>
+                <div style="padding-top: 2ex;">
+                    <label>Поиск монет для продажи</label>
+                    <input id="search" class="form-control" placeholder="Название монеты">
+
+                    <div class="span7 text-center" style="padding-top:3ex;">
+                        <input type="button" value="Найти" id="btn_search" class="btn btn-primary">
+                        <input type="button" value="Убрать монеты" id="clear_result" class="btn btn-warning">
+                    </div>
+
+                </div>
+                <div id="result_box" style="margin-top: 4ex; height: 100%; width: 100%;margin-bottom: 4ex;">
+
+                </div>
+
+            </div>
+
+            <div class='height: 3ex;'></div>
+<hr>
+            <!-- добавленные монеты -->
+            <div id="adding_coins" style="padding-top: 4ex;">
+
+                <h2>Монеты, добавленные в лот</h2>
+
+                    <div class="col-sm-3" style="padding-top: 2ex;">
+                        <label>Количество доступных лотов:</label>
+                       <input type="number" min="1" value="1" id="quantity_lots" class="form-control">
+                    </div>
+
+
+                <div class="col-sm-12" style="padding-top: 2ex;">
+                    <label>Монеты, находящиеся в одном лоте</label>
+                    <table id="tbl_add_coins" class="table">
+                        <thead>
+                            <th>Монета</th>
+                            <th>
+                                Номинал
+                            </th>
+                            <th style="width:30ex;">
+                                Количество
+                            </th>
+                            <th style="width:30ex;">
+                                Стоимость
+                            </th>
+                            <th>
+
+                            </th>
+
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+<hr>
+            <!-- добавленные изображения -->
+            <div id="add_photo" style="padding-top: 2ex;">
+                <hr>
+                <h3>Шаг 2: Добавление пользовательских фотографий монет</h3>
+                <label>Добавить фотографии</label>
+                <input type="file" id="photo" multiple accept="image/*" class="form-control">
+            </div>
+
+            <div style="padding-top: 2ex;">
+                <hr/>
+                <h3>Шаг 3: Описание лота</h3>
+                <textarea id="description" class="form-control">
+
+                </textarea>
+            </div>
+
+            <div class="span7 text-center" style="padding-top:3ex;">
+                <input type="button" id="publish" value="Опубликовать" class="btn btn-success">
+            </div>
+
+        </form>
+
+    </div>
+{% endblock %}
