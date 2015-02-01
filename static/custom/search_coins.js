@@ -13,12 +13,12 @@ $(document).ready(function(){
                         },
                         dataType:'json',
                         success:function(data){
-                            var name = Array()
+                            var name = Array();
                             data.forEach(function(entry){
                                 name.push(entry['fields']['coin_name'])
                             });
-                            arr_names = deleteDuplicate(name)
-                            console.log(deleteDuplicate(arr_names))
+                            arr_names = deleteDuplicate(name);
+                            console.log(deleteDuplicate(arr_names));
                             return process(arr_names)
                         }
                     });

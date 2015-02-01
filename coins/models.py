@@ -5,13 +5,12 @@ from django.utils.translation import ugettext as _
 
 
 class Countries(models.Model):
-	'''Table for store name countries'''
+	'''Table for countries'''
 	class Meta:
-		db_table = 'Countries' # name table in DB
+		db_table = 'Countries' # table name in DB
 		verbose_name = _(u'Страна')
 		verbose_name_plural = _(u'Страны')
 
-	#id = models.AutoField(primary_key=True) # id
 	country_name = models.CharField(max_length='200', verbose_name=_(u'Название страны'))
 	country_flag = models.ImageField(upload_to='/static/flag', blank=True, verbose_name=_(u'Флаг страны')) # Image flag for country
 
@@ -21,13 +20,12 @@ class Countries(models.Model):
 
 # http://tinyurl.com/pbbzjv7 - link to Wikipedia, paragraph 3.
 class Series(models.Model):
-	'''Table with names series coins '''
+	'''Table with coins series name '''
 	class Meta:
 		db_table = 'Series' # name table in DB
 		verbose_name = _(u'Серия монеты')
 		verbose_name_plural = _(u'Серия монет')
 
-	#series = models.AutoField(primary_key=True) # id
 	country = models.ForeignKey('Countries')
 	series_name = models.CharField(max_length='255')
 
@@ -52,7 +50,6 @@ class Mints(models.Model):
 		verbose_name = _(u'Монетный двор')
 		verbose_name_plural = _(u'Монетные дворы') #  отображение имени модели во множественном числе
 
-	#mint = models.AutoField(primary_key=True)
 	country = models.ForeignKey('Countries', verbose_name=_(u'Страна'))
 	mint_name = models.CharField(max_length='200', verbose_name=_(u'Название монетного двора'))
 	mint_abbreviation = models.CharField(max_length=10, verbose_name=_(u'Аббревиатура'))
@@ -89,7 +86,6 @@ class Coins(models.Model):
 		verbose_name = _(u'Монеты')
 		verbose_name_plural = _(u'Монеты')
 
-	#coin = models.AutoField(primary_key=True) # id
 	country = models.ForeignKey('Countries',verbose_name=_(u'Страна'))
 	series = models.ForeignKey('Series',verbose_name=_(u'Серия'))
 	coin_metal = models.ForeignKey('Metals',verbose_name=_(u'Металл'))
