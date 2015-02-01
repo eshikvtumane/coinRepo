@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}
+    Монеты на! - Добавление лота
+{% endblock %}
+
 {% block scripts %}
     <script type="text/javascript" src="{% static 'custom/csrf_ajax.js' %}"></script>
     <script type="text/javascript" src="{% static 'custom/search_coins_lots.js' %}"></script>
