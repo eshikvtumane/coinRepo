@@ -11,7 +11,9 @@ from django.template import RequestContext
 
 import json
 from django.core import serializers
-from django.core.files.uploadedfile import SimpleUploadedFile
+
+from django.core.files import File
+from django.conf import settings
 
 
 # Create your views here.
@@ -67,9 +69,21 @@ class CreateLot(View):
         CoinToShop.objects.bulk_create(coins_sale)
     # Добавление фотографий монет продавца
         #file_content = SimpleUploadedFile('%s'%)
-        photo = [ImageCoin(item=lot_create, image=p) for p in photos]
+        photo = []
+        for p in photos:
+            path = self.save_file(p)
+            photo.append([ImageCoin(item=lot_create, image=path)])
         ImageCoin.objects.bulk_create(photo)
         return HttpResponse('200', 'text/plain')
+
+    def save_file(self, file, path = 'user_image'):
+        filename = file._get_name()
+        image = '%s/%s' % (settings.MEDIA_ROOT, str(path) + str(filename))
+        fd = open(image, 'wb')
+        for chunk in file.chunks():
+            fd.write(chunk)
+        fd.close()
+        return image
 
 
 class SearchCoinsView(View):
