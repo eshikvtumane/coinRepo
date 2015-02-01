@@ -79,8 +79,8 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                 coins = JSON.parse(data[1]);
 
                 // get quantity pages
-                total_pages = data[0]
-                console.log(first_search)
+                total_pages = data[0];
+                console.log(first_search);
                 if(first_search == 'True'){
                     Paginator(total_pages)
                 }
@@ -88,10 +88,10 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
 
                 html = '<div>';
                 coins.forEach(function(entry){
-                    fields = entry['fields']
+                    fields = entry['fields'];
 
                     name = fields['coin_name'];
-                    name_length = 20
+                    name_length = 20;
                     if(name.length > name_length){ // for minimum length name coins
                         name = name.substring(0,name_length) + '...'
                     }
@@ -101,7 +101,7 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                     html += '<div>' + href + name + '</a></div>';
                     html += '<div><label>' + fields['rate'] + ' ' + fields['denominal'] + '</label> </div></div></a>';
                 });
-                html += '</div>'
+                html += '</div>';
 
                 $('#result_box').html(html)
 

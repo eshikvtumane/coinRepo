@@ -27,10 +27,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ["desolate-journey-3333.herokuapp.com"]
 
-TEMPLATE_DIRS = (
-    BASE_DIR + '/users/templates/',
-    os.path.join(BASE_DIR, '/users/templates/auth'),
-)
 
 '''FIXTURE_DIRS = (
     os.path.join(BASE_DIR, '/users/fixtures'),
@@ -125,7 +121,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),)
+TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),os.path.join(BASE_DIR,"users/templates/users"))
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
 
 MEDIA_URL_AVATAR = 'avatar/'
