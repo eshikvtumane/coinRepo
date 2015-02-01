@@ -22,17 +22,19 @@
 {% block content %}
 
 
-
+<h1 align="center">Выберите страну</h1>
     <div id="country_box">
         {% for country in countries%}
-            <div class="col-lg-3" align="center">
-                <div>
-                    <img src="{{ country.country_flag }}" width="40%" height="50%">
+            <a href="/coins/catalog/city/{{ country.id }}">
+                <div class="col-lg-3 alert alert-info" align="center">
+                    <div>
+                        <img src="/media/{{ country.country_flag }}" width="40%" height="50%">
+                    </div>
+                    <div>
+                        <a href="/coins/catalog/city/{{ country.id }}">{{ country.country_name }}</a>
+                    </div>
                 </div>
-                <div>
-                    <a href="/coins/catalog/{{ country.id }}">{{ country.country_name }}</a>
-                </div>
-            </div>
+                </a>
         {% endfor %}
     </div>
 

@@ -1,0 +1,128 @@
+[
+  {
+    "fields": {
+      "defect_name": "Без брака"
+    },
+    "model": "users.defects",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "defect_name": "Дефекты монетного кружка"
+    },
+    "model": "users.defects",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "defect_name": "Непрочекан"
+    },
+    "model": "users.defects",
+    "pk": 3
+  },
+  {
+    "fields": {
+      "defect_name": "Раскол"
+    },
+    "model": "users.defects",
+    "pk": 4
+  },
+  {
+    "fields": {
+      "defect_name": "Износ штемпеля"
+    },
+    "model": "users.defects",
+    "pk": 5
+  },
+  {
+    "fields": {
+      "defect_name": "Соударение штемпеля"
+    },
+    "model": "users.defects",
+    "pk": 6
+  },
+  {
+    "fields": {
+      "defect_name": "Шлифовка штемпеля"
+    },
+    "model": "users.defects",
+    "pk": 7
+  },
+  {
+    "fields": {
+      "defect_name": "Сдвоенность изображения на штемпеле"
+    },
+    "model": "users.defects",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "defect_name": "Поворот"
+    },
+    "model": "users.defects",
+    "pk": 9
+  },
+  {
+    "fields": {
+      "defect_name": "Выкус"
+    },
+    "model": "users.defects",
+    "pk": 10
+  },
+  {
+    "fields": {
+      "defect_name": "Чеканка на не соответсвующих заготовках"
+    },
+    "model": "users.defects",
+    "pk": 11
+  },
+  {
+    "fields": {
+      "defect_name": "Залипуха"
+    },
+    "model": "users.defects",
+    "pk": 12
+  },
+  {
+    "fields": {
+      "defect_name": "Односторонний чекан"
+    },
+    "model": "users.defects",
+    "pk": 13
+  },
+  {
+    "fields": {
+      "defect_name": "Двойной удар"
+    },
+    "model": "users.defects",
+    "pk": 14
+  },
+  {
+    "fields": {
+      "defect_name": "Трещина монеты"
+    },
+    "model": "users.defects",
+    "pk": 15
+  },
+  {
+    "fields": {
+      "defect_name": "Сдвиг гуртовой надписи"
+    },
+    "model": "users.defects",
+    "pk": 16
+  },
+  {
+    "fields": {
+      "defect_name": "'Чужая' гуртовая надпись"
+    },
+    "model": "users.defects",
+    "pk": 17
+  },
+  {
+    "fields": {
+      "defect_name": "'Чужой' гуртовой штемпель"
+    },
+    "model": "users.defects",
+    "pk": 18
+  }
+]

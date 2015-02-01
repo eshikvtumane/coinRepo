@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    Монеты на! - {{ country.name.country }}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_country.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+<!-- Change design select element -->
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'js/add_user_series.js' %}"></script>
+
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <a href="/user/collections/">Страны</a> /
+    </div>
+
+
+    <h1>Добавленные серии</h1>
+    <div>
+        <label>Страна:</label>
+        <label><b>{{ country.name.country }}</b></label>
+        <label id="id" hidden="True">{{ country.id }}</label>
+    </div>
+    <div>
+        <h3>Добавьте серию:</h3>
+        <select id="series" class="chosen-select" data-placeholder="Выберите серию">
+            <option selected="selected" value="-1" hidden="True"></option>
+            {% for s in series %}
+                <option value="{{ s.id }}">{{ s.series_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" id="btnAdd" value="Добавить" class="btn btn-success">
+    </div>
+
+<h3>Серии, добавленные пользователем</h3>
+    <div id="usr_series">
+        {% if series %}
+
+            <table id="tbl_series" class="table">
+                {% for series in series_user %}
+                <tr class='bg-info' id="{{ series.user_series }}">
+                    <td class='flag'>
+                        <img src="{% static 'photo/gold_coin.jpg' %}">
+                    </td>
+                    <td>
+                        <a href="{{ series.user_series }}">{{ series.user_series__series_name }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ series.user_series }}" class="btn btn-primary">Перейти</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" value="{{ series.user_series }}" onclick="deleteSeries(this);">Удалить</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3>Нет выбранных серии</h3>
+            <span>Выберите те серии, монеты которых есть у вас</span>
+        {% endif %}
+    </div>
+{% endblock %}

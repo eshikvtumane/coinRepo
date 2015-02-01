@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth.models import User
+from users.models import Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 
@@ -41,13 +42,6 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email']
-        '''labels = {
-            'username': _(u'Логин'),
-            'password1': _(u'Пароль'),
-            'password2': _(u'Повторите пароль'),
-            'email': _('E-mail'),
-            #'full_name': _(u'Фамилия и имя'),
-        }'''
 
 class AuthForm(forms.Form):
     username = forms.RegexField(label=_(u'Логин'), required=True, max_length=30, regex=r'^[\w.@+-]+$',
@@ -56,3 +50,22 @@ class AuthForm(forms.Form):
     password = forms.CharField(label=_(u'Пароль'),
                                 widget=forms.PasswordInput,
                                 error_messages={'required': _(u'Обязательное поле')})
+
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ['user', 'first_name', 'last_name', 'middle_name', 'avatar']
+        exclude = ('user',)
+
+class CustomUserForm(forms.Form):
+    email = forms.EmailField(label='Email', required=False,
+        error_messages = {'invalid': _(u'Введите правильный email'),
+                          'required': _(u'Обязательное поле')})
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+
+        if User.objects.filter(email=data).exists():
+            raise forms.ValidationError(u'Email уже используется')
+        return data

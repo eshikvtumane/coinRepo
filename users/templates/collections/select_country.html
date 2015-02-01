@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_country.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <!--http://jsfiddle.net/koenpunt/5Ab8B/
+    https://github.com/harvesthq/chosen/releases/
+    http://harvesthq.github.io/chosen/
+    http://alxlit.name/bootstrap-chosen/-->
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+<!-- Change design select element -->
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'js/add_user_country.js' %}"></script>
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="col-sm-9">
+        <h1>Добавленные страны</h1>
+        <div>
+            <h3>Добавьте страну:</h3>
+            <select id="countries" class="chosen-select" data-placeholder="Выберите страну">
+                <option selected="selected" value="-1" hidden="True"></option>
+                {% for country in countries %}
+                    <option value="{{ country.id }}">{{ country.country_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="span7 text-center" style="padding-top:3ex;">
+            <input type="submit" id="btnAdd" value="Добавить" class="btn btn-success">
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <form action="import/" style="margin-top:10%">
+            <button type="submit">
+                <img src='/media/xls.png' height="80px" width="80px"><br/>
+                Экспортировать <br/>
+                коллекцию
+            </button>
+        </form>
+    </div>
+
+</div>
+
+
+
+
+<h3>Страны, добавленные пользователем</h3>
+    <div id="usr_countries">
+        {% if countries_user %}
+
+            <table id="tbl_country" class="table">
+                {% for country in countries_user %}
+                <tr class='bg-info' id="{{ country.country }}">
+                    <td class='flag'>
+                        <img src="/media/{{ country.country__country_flag }}">
+                    </td>
+                    <td>
+                        <a href="{{ country.country }}">{{ country.country__country_name }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ country.country }}" class="btn btn-primary">Перейти</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" value="{{ country.country }}" onclick="deleteCountry(this);">Удалить</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3>Нет выбранных стран</h3>
+            <label hidden="True" id="hidden">True</label>
+            <span>Выберите те страны, монеты которых есть у вас</span>
+        {% endif %}
+    </div>
+
+
+
+
+{% endblock %}

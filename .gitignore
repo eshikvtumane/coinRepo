@@ -1,8 +1,7 @@
 *.pyc
-*.jpg
-*.jpeg
-*.png
 *.svg
 .idea/
+static/coins/*.jpg
+static/coins/*.jpeg
 migrations/
 db.sqlite3

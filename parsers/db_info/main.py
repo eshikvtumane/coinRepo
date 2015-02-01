@@ -5,7 +5,8 @@ import progressbar
 
 def connectDB():
 	try:
-		con = lite.connect('/home/inframercury/django/coinRepo/db.sqlite3')
+		con = lite.connect('/home/eshik/projects/coins/coinRepo/db.sqlite3')
+		con.text_factory = str
 		return con
 	except lite.Error, e:
 		print 'Error: %s'%e.args[0]
@@ -121,39 +122,39 @@ def insertCoins(con, countries, wb):
 		bar.update(i)
 		query = (countries,)
 		for s in series:
-			if s[1] == ws.row_values(i)[2]:
+			if s[1].decode('utf-8') == ws.row_values(i)[2]:
 				query += (s[0],)
 				break
 		for m in metals:
-			if m[1] == ws.row_values(i)[16]:
+			if m[1].decode('utf-8') == ws.row_values(i)[16]:
 				query += (m[0],)
 				break
 
 		qua = quanties_rus[ws.row_values(i)[15]]
 		for q in quanties:
-			if q[1] == qua:
+			if q[1].decode('utf-8') == qua:
 				query += (q[0],)
 				break
 
 		query += (ws.row_values(i)[0].encode('utf-8'),) # name
-		query += (ws.row_values(i)[1],) # link
-		query += (ws.row_values(i)[3],) # desc1
-		query += (ws.row_values(i)[4],) # desc2
-		query += (ws.row_values(i)[5],) # painter
-		query += (ws.row_values(i)[6],) # sculptor
-		query += (ws.row_values(i)[10],) # herd
+		query += (unicode(ws.row_values(i)[1]),) # link
+		query += (unicode(ws.row_values(i)[3]),) # desc1
+		query += (unicode(ws.row_values(i)[4]),) # desc2
+		query += (unicode(ws.row_values(i)[5]),) # painter
+		query += (unicode(ws.row_values(i)[6]),) # sculptor
+		query += (unicode(ws.row_values(i)[10]),) # herd
 		query += ('/static/coins/%s.jpg'%ws.row_values(i)[23],) # photo1
 		query += ('/static/coins/%sr.jpg'%ws.row_values(i)[23],) # photo2
 		
-		query += (ws.row_values(i)[13],) # rate
-		query += (ws.row_values(i)[14],) # denomenal
-		query += (ws.row_values(i)[17],) # weigth
-		query += (ws.row_values(i)[18],) # chemistry
-		query += (ws.row_values(i)[19],) # diametr
-		query += (ws.row_values(i)[20],) # thickness
-		query += (ws.row_values(i)[21],) # circulation
-		query += (ws.row_values(i)[22],) # date
-		query += (ws.row_values(i)[23],) # item_number
+		query += (unicode(ws.row_values(i)[13]),) # rate
+		query += (unicode(ws.row_values(i)[14]),) # denomenal
+		query += (unicode(ws.row_values(i)[17]),) # weigth
+		query += (unicode(ws.row_values(i)[18]),) # chemistry
+		query += (unicode(ws.row_values(i)[19]),) # diametr
+		query += (unicode(ws.row_values(i)[20]),) # thickness
+		query += (unicode(ws.row_values(i)[21]),) # circulation
+		query += (unicode(ws.row_values(i)[22]),) # date
+		query += (unicode(ws.row_values(i)[23]),) # item_number
 
 		cur.execute('INSERT INTO Coins(country_id, series_id, coin_metal_id, quality_id, coin_name,link_cbr,description_observe,description_reverse,painter,sculptor,coin_herd,photo_obverse,photo_reverse,rate,denominal,coin_weight,chemistry,coin_diameter,coin_thickness,coin_circulation,manufacture_date,item_number) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',query)
 
@@ -174,7 +175,7 @@ def insertCoins(con, countries, wb):
 	bar.finish()
 
 if __name__ == '__main__':
-	wb = xlrd.open_workbook('coins.xls', formatting_info=True)
+	wb = xlrd.open_workbook('/home/eshik/projects/coins/coinRepo/parsers/db_info/coins.xls', formatting_info=True)
 	ws = wb.sheet_by_index(0)
 	rows = ws.nrows
 	series = []

@@ -1,0 +1,103 @@
+import urllib2
+from bs4 import BeautifulSoup as BS
+import re
+import sqlite3 as lite
+import datetime
+
+def connect_db():
+	try:
+		con = lite.connect('/home/eshik/projects/coins/coinRepo/db.sqlite3')
+		con.text_factory = str
+		return con
+	except lite.Error, e:
+		print 'Error: %s'%e.args[0]
+
+def connect_close(con):
+	con.close()
+
+def get_coins(con):
+	sql = 'SELECT id, coin_name, rate, denominal FROM Coins'
+
+	cur = con.cursor()
+	cur.execute(sql)
+	select = cur.fetchall()
+	#for obj in select:
+		#print obj
+	return select
+
+def get_price(coins):
+	results = []
+	for obj in coins[:5]:
+		link = 'http://molotok.ru/listing/listing.php?category=48393&p='
+		link_end = '&search_scope=category-48393&string=%s+%s+%s' % (obj[2], obj[3], obj[1].replace(' ', '+'))
+
+		count_page = 1
+		buf_result = []
+		while(True):
+			res = []
+			while(True):
+				try:
+					res = parse_prices(link + str(count_page) + link_end)
+					break
+				except:
+					print 'Error connect. Retry ...'
+			if res == []:
+				break
+			if count_page > 5:
+				break
+			buf_result += res
+			count_page += 1
+		if buf_result:
+			results.append((obj[0], get_median(buf_result), '%s1%s'%(link, link_end),))
+		print '=' *40
+		#print results
+		print '=' *40
+	
+
+	return results
+
+def parse_prices(link):
+	response = urllib2.urlopen(link)
+	html = response.read()
+	print link
+	page = BS(html)
+	prices = page.findAll('span', {'class':'bid dist', 'class':'buy-now dist'})
+	
+	array_prices = []
+	if prices:
+		for obj in prices:
+			price = re.findall('\d+.\d+', obj.get_text())
+			arr_price = [ float(p.replace(',', '.').replace(' ', '')) for p in price ]
+			array_prices += arr_price
+	return array_prices
+
+def get_median(arr):
+	arr.sort()
+	length_arr = len(arr)
+
+	if length_arr % 2 == 0:
+		return (arr[(length_arr / 2) - 1] + arr[(length_arr / 2)]) / 2
+	return arr[int(length_arr / 2)]
+
+def insert_data(con, data):
+	sql_insert = 'INSERT INTO Price(coin_id, price, link, date) VALUES(?,?,?,?)'
+	con.executemany(sql_insert, data, datetime.date.today())
+	con.commit()
+
+if __name__ == '__main__':
+	print 'Connect DB ...'
+	con = connect_db()
+	print 'Get coins ...'
+	coins = get_coins(con)
+	print 'Get prices ...'
+	result = get_price(coins)
+	print result
+	print 'Insert data'
+	insert_data(con, result)
+	print 'Connect close ...'
+	connect_close(con)
+
+
+
+
+

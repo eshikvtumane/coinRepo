@@ -2,8 +2,14 @@
     /**/
     height:50%;
     width:20%;
+    padding-bottom: 2ex;
 }
 
 .coin_item{
     padding-top: 10%
 }
+
+/*#coin:hover{
+    background: yellow;
+    border: 1px solid black;
+}*/

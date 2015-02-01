@@ -54,6 +54,7 @@ function deleteDuplicate(arr){
     return uniqueNames
 }
 function ajaxCoinsSearch(first_search, number_page){ // first_search указывает, происходит загрузка контента при поиске или переходе меджу страницами
+    $('#result_box').html('<img src="/static/gif/ajax-loader.gif">')
     $.ajax({
             type:'POST',
             url:'/coins/catalog/search/',
@@ -65,7 +66,8 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                 'qualities':$('#qualities').val(),
                 'metals':$('#metals').val(),
                 'page' : number_page,
-                'first_load' : first_search
+                'first_load' : first_search,
+                'country':$('#country').html()
             },
             dataType: 'json',
             success:function(data){
@@ -94,13 +96,15 @@ function ajaxCoinsSearch(first_search, number_page){ // first_search указы�
                         name = name.substring(0,name_length) + '...'
                     }
 
-                    html += '<div class="coins_view col-lg-3" align="center"><div class="coin_item"><img src="' + fields['photo_reverse'] + '" width="100px" height="100px"></div>';
-                    html += '<div><a href="' + entry['pk'] + '" title="' + fields['coin_name'] + '" target="_blank"><label>' + name + '</label></a></div>';
-                    html += '<div><label>' + fields['rate'] + ' ' + fields['denominal'] + '</label> </div></div>';
+                    href = '<a href="' + entry['pk'] + '" title="' + fields['coin_name'] + '" target="_blank">'
+                    html += href + '<div class="coins_view col-lg-3" align="center"><div class="coin_item"><img src="' + fields['photo_reverse'] + '" width="100px" height="100px"></div>';
+                    html += '<div>' + href + name + '</a></div>';
+                    html += '<div><label>' + fields['rate'] + ' ' + fields['denominal'] + '</label> </div></div></a>';
                 });
                 html += '</div>'
 
                 $('#result_box').html(html)
+
             }
         });
 }

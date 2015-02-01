@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+    <link href="{% static 'js/kladr/jquery.kladr.min.css' %}" rel="stylesheet">
+    <link href="{% static 'js/kladr/form_with_map.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+        <script src="{% static 'js/kladr/jquery.kladr.min.js' %}" type="text/javascript"></script>
+        <script src="{% static 'js/kladr/form_with_map.js' %}" type="text/javascript"></script>
+
+        <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Добавленные адреса для доставки</h1>
+        {% for a in address %}
+            <div class="col-sm-3" style="padding-top: 3ex;">
+                <div>
+                    <label>Край: </label>
+                    <label>{{ a.region }}</label>
+                </div>
+                <div>
+                    <label>Город: </label>
+                    <label>{{ a.city }}</label>
+                </div>
+                <div>
+                    <label>Улица: </label>
+                    <label>{{ a.street }}</label>
+                </div>
+
+                <div>
+                    <label>Дом: </label>
+                    <label>{{ a.house }}</label>
+                </div>
+
+                {% if a.structure %}
+                    <div>
+                        <label>Строение: </label>
+                        <label>{{ a.structure }}</label>
+                    </div>
+                {% endif %}
+                <div>
+                    <label>Корпус: </label>
+                    <label>{{ a.housing }}</label>
+                </div>
+                <div>
+                    <label>Квартира: </label>
+                    <label>{{ a.flat }}</label>
+                </div>
+                <div>
+                    <label>Почтовый индекс: </label>
+                    <label>{{ a.zip_code }}</label>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="form">
+         <div class="address">
+            <h1>Форма для ввода адреса с картой</h1>
+            <div class="col-1">
+                <form class="js-form-address" method="post">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label>Регион</label>
+                        <input name="region" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Город</label>
+                        <input name="city" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Улица</label>
+                        <input name="street" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Номер дома</label>
+                        <input name="building" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Корпус</label>
+                        <input name="housing" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Строение</label>
+                        <input name="structure" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Номер квартиры</label>
+                        <input name="flat" type="text">
+                    </div>
+                    <div class="field">
+                        <label>Почтовый индекс</label>
+                        <input id="zip" name="zip" type="text">
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" value="Сохранить" class="btn btn-primary">
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-2">
+                <div id="map" class="panel-map"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}
+    {{ series_name }}
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/user_country.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'chosen/chosen.jquery.js' %}"></script>
+<!-- Change design select element -->
+    <script src="{% static 'chosen/select_bootstrap_items.js' %}"></script>
+    <script src="{% static 'js/add_user_coins.js' %}"></script>
+    <script src="{% static 'custom/csrf_ajax.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <a href="/user/collections/">Страны</a> /
+        {% for c in country %}
+            <a href="/user/collections/{{ c.id }}">{{ c.country_name }}</a> /
+            <a href="/user/collections/{{ s.country__id }}/{{ s.id }}">{{ s.series_name }}</a>
+        {% endfor %}
+    </div>
+
+    <div>
+        <label>Серия: </label>
+        <label>{{ series_name }}</label>
+        <label id="series_id" hidden="True">{{ series }}</label>
+    </div>
+    <h1>Добавленные монеты</h1>
+
+<div id="coins_add">
+    <select id="select_coins" class="chosen-select" multiple data-placeholder="Выберите монеты">
+        <option value="-1"></option>
+        {% for coin in coins %}
+            <option value="{{ coin.id }}">{{ coin.coin_name }}</option>
+        {% endfor %}
+    </select>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="allCoins">
+            Выбрать все монеты
+        </label>
+    </div>
+    <input class="btn btn-primary" type="button" value="Добавить" id="addCoins">
+</div>
+
+<div id="notification">
+    <div id="load" class="bg-success" style="display:none">
+        <img src="{% static 'gif/ajax-loader.gif' %}">
+        <label>Пожалуйста, подождите ...</label>
+    </div>
+    <div id="success" style="display:none">
+        <label>Добавление монет прошло успешно.</label>
+    </div>
+    <div id="error" style="display:none">
+        <label>Произошла ошибка.</label>
+    </div>
+</div>
+
+<h3>Монеты, добавленные пользователем</h3>
+    <div id="usr_coins">
+        {% if usr_coins %}
+
+            <table id="tbl_coins" class="table">
+                {% for coin in usr_coins %}
+                <tr class='bg-info' id="{{ coin.coin__id }}">
+                    <td class='flag'>
+                        <img src="{{ coin.coin__photo_reverse }}">
+                    </td>
+                    <td>
+                        <a href="{{ coin.coin__id }}">{{ coin.coin__coin_name }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ coin.coin__id  }}" class="btn btn-primary">Перейти</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" value="{{ coin.coin__id }}" onclick="deleteCountry(this);">Удалить</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <h3>Нет выбранных монет</h3>
+            <span>Выберите монеты, которые у Вас есть в наличии</span>
+        {% endif %}
+    </div>
+{% endblock %}

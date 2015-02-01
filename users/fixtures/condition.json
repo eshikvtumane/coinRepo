@@ -1,0 +1,65 @@
+[
+  {
+    "model": "users.coinscondition",
+    "pk": 1,
+    "fields":{
+      "condition_name":"Превосходное",
+      "condition_abbr": "UNC",
+      "condition_color": "#38f25a"
+    }
+  },
+  {
+    "model": "users.coinscondition",
+    "pk": 2,
+    "fields":{
+      "condition_name":"Почти превосходное",
+      "condition_abbr": "AC",
+      "condition_color": "#38C3F2"
+    }
+  },
+  {
+    "model": "users.coinscondition",
+    "pk": 3,
+    "fields":{
+      "condition_name":"Отличное",
+      "condition_abbr": "EF",
+      "condition_color": "#3851F2"
+    }
+  },
+  {
+    "model": "users.coinscondition",
+    "pk": 4,
+    "fields":{
+      "condition_name":"Очень хорошее",
+      "condition_abbr": "VF",
+      "condition_color": "green"
+    }
+  },
+  {
+    "model": "users.coinscondition",
+    "pk": 5,
+    "fields":{
+      "condition_name":"Хорошее",
+      "condition_abbr": "F",
+      "condition_color": "#CEED32"
+    }
+  },
+  {
+    "model": "users.coinscondition",
+    "pk": 6,
+    "fields":{
+      "condition_name":"Удовлетворительное",
+      "condition_abbr": "VG",
+      "condition_color": "#CA38F2"
+    }
+  },
+  {
+    "model": "users.coinscondition",
+    "pk": 7,
+    "fields":{
+      "condition_name":"Слабое",
+      "condition_abbr": "G",
+      "condition_color": "#ED3232"
+    }
+  }
+]

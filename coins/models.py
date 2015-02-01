@@ -1,6 +1,9 @@
 #-*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext as _
+from django.utils import timezone
+
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -12,7 +15,7 @@ class Countries(models.Model):
 		verbose_name_plural = _(u'Страны')
 
 	country_name = models.CharField(max_length='200', verbose_name=_(u'Название страны'))
-	country_flag = models.ImageField(upload_to='/static/flag', blank=True, verbose_name=_(u'Флаг страны')) # Image flag for country
+	country_flag = models.ImageField(upload_to='flag', blank=True, verbose_name=_(u'Флаг страны')) # Image flag for country
 
 	def __unicode__(self):
 		return self.country_name
@@ -93,27 +96,33 @@ class Coins(models.Model):
 
 	coin_name = models.CharField(max_length='255', verbose_name=_(u'Название монеты'))
 	link_cbr = models.URLField(verbose_name=_(u'Сайт банка')) # link on description coin on site Central Bank of Russia
-	description_observe = models.CharField(max_length='255', verbose_name='Описание аверса')
-	description_reverse = models.CharField(max_length='255', verbose_name='Описание реверса')
+	description_observe = models.TextField(verbose_name='Описание аверса')
+	description_reverse = models.TextField(verbose_name='Описание реверса')
 	painter = models.CharField(max_length='255', verbose_name='Художник(и)')
 	sculptor = models.CharField(max_length='255', verbose_name='Скульптор(ы)')
-	coin_herd = models.CharField(max_length='255', blank=True, verbose_name='Описание гурта') # edge of a coin http://tinyurl.com/m56ms6y
+	coin_herd = models.CharField(max_length='255', blank=True, verbose_name='Описание гурта', null=True) # edge of a coin http://tinyurl.com/m56ms6y
 	photo_obverse = models.ImageField(upload_to='/static/coins', verbose_name='Фото аверса')
 	photo_reverse = models.ImageField(upload_to='/static/coins', verbose_name='Фото реверса')
 
 	rate = models.IntegerField(verbose_name='Номинал') #coin rating
 	denominal = models.CharField(max_length='255', verbose_name='Валюта')
 	#denominal_name = models.ForeignKey('Denominals') #currency
-	coin_weight = models.FloatField(blank=True, verbose_name='Вес')
-	chemistry = models.FloatField(blank=True, verbose_name='Содержание химически чистого металла')
-	coin_diameter = models.FloatField(blank=True, verbose_name='Диаметр')
-	coin_thickness = models.FloatField(blank=True, verbose_name='Толщина')
+	coin_weight = models.FloatField(blank=True, verbose_name='Вес', null=True)
+	chemistry = models.FloatField(blank=True, verbose_name='Содержание химически чистого металла', null=True)
+	coin_diameter = models.FloatField(blank=True, verbose_name='Диаметр', null=True)
+	coin_thickness = models.FloatField(blank=True, verbose_name='Толщина', null=True)
 	coin_circulation = models.BigIntegerField(verbose_name='Тираж')
 	manufacture_date = models.DateField(verbose_name='Дата выпуска')
 	item_number = models.CharField(max_length=9, verbose_name='Каталожный номер') # http://tinyurl.com/kbh5fly
 
-	'''def __unicode__(self):
-		return'''
+
+	def __unicode__(self):
+		return self.coin_name
+	def admin_image(self):
+		return u'<img src="%s" style="width: 50%%; height:50%%"/>'%(self.photo_reverse.url)
+
+	admin_image.short_description = u'Фото реверса'
+	admin_image.allow_tags = True
 
 class CoinToMint(models.Model):
 	class Meta:
@@ -127,5 +136,35 @@ class CoinToMint(models.Model):
 	def __unicode__(self):
 		return self.coin.coin_name
 
+# Цены на монеты
+class Prices(models.Model):
+	class Meta:
+		db_table = 'Price'
+		verbose_name = 'Цена'
+		verbose_name_plural = 'Цены'
+
+	coin = models.ForeignKey('Coins')
+	price = models.FloatField()
+	link = models.URLField()
+	date = models.DateField(default=timezone.now, null=True, blank=True)
+
+class CoinSearchWord(models.Model):
+	class Meta:
+		db_table = 'CoinSearchWords'
+		verbose_name = 'Hash_tag'
+		verbose_name_plural = 'Hash_tags'
+
+	coin = models.ForeignKey('Coins')
+	search_word = models.CharField(max_length=255)
+
+
+class WishListModel(models.Model):
+	class Meta:
+		db_table = 'WishList'
+
+	user = models.ForeignKey(User)
+	user_username = models.CharField(max_length=255)
+	coin = models.ForeignKey('Coins')
+	url = models.URLField(blank=True, null=True)
 
 

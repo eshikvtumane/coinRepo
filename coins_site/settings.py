@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+#-*- coding:utf-8 -*-
 """
 Django settings for coins_site project.
 
@@ -27,12 +26,18 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ["desolate-journey-3333.herokuapp.com"]
-ALLOWED_HOSTS = []
-#
-# TEMPLATE_DIRS = (
-#     BASE_DIR + '/users/templates/',
-#     os.path.join(BASE_DIR, '/users/templates/auth'),
-# )
+
+TEMPLATE_DIRS = (
+    BASE_DIR + '/users/templates/',
+    os.path.join(BASE_DIR, '/users/templates/auth'),
+)
+
+'''FIXTURE_DIRS = (
+    os.path.join(BASE_DIR, '/users/fixtures'),
+),'''
+
+LOGIN_URL = '/user/authentication'
+LOGIN_REDIRECT_URL = '/user/authentication'
 
 # Application definition
 
@@ -47,11 +52,15 @@ INSTALLED_APPS = (
     'bootstrapform',
     'whoosh',
     'haystack',
+    'django.contrib.humanize',
+    'chartit',
     #'django_ajax',
     # applications
     'main',
     'coins',
-    'users'
+    'users',
+    'news',
+    'shop',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,7 +73,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'django_ajax.middleware.AJAXMiddleware',
 )
-
 
 GRAPPELLI_ADMIN_TITLE = u'Монеты НА! - Административная панель'
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -117,14 +125,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,'templates'),)
-
-
-
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+
+MEDIA_URL_AVATAR = 'avatar/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
