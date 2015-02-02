@@ -9,7 +9,7 @@ from os import path
 
 # Register your models here.
 
-#http://stackoverflow.com/questions/5498152/how-to-create-own-extended-user-form
+#http://stackoverflow.com/questions/5498152/how-to-create-own-extended-user_image-form
 class ProfileInline(admin.StackedInline):
     model = Profile
 
@@ -55,10 +55,10 @@ class MyUserAdmin(admin.ModelAdmin):
 
 
 class UserCountriesAdmin(admin.ModelAdmin):
-    fields = ['country', 'user']
+    fields = ['country', 'user_image']
 
 class UserSeriesAdmin(admin.ModelAdmin):
-    fields = ['user', 'user_country', 'user_series']
+    fields = ['user_image', 'user_country', 'user_series']
 
 class UserCoinsAdmin(admin.ModelAdmin):
     fields = []

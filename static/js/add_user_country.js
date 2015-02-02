@@ -6,7 +6,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: 'POST',
-            url: '/user/ajax/add/country/',
+            url: '/user_image/ajax/add/country/',
             data: { 'country_id':country_id },
             dataType: 'json',
             success: function(data){
@@ -51,7 +51,7 @@ $(document).ready(function(){
         console.log(country_id);
         $.ajax({
             type: 'POST',
-            url:'/user/country/delete/',
+            url:'/user_image/country/delete/',
             data:{
                 'c_id': country_id
             },

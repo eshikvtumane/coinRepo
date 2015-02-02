@@ -32,8 +32,8 @@ ALLOWED_HOSTS = ["desolate-journey-3333.herokuapp.com"]
     os.path.join(BASE_DIR, '/users/fixtures'),
 ),'''
 
-LOGIN_URL = '/user/authentication'
-LOGIN_REDIRECT_URL = '/user/authentication'
+LOGIN_URL = '/user_image/authentication'
+LOGIN_REDIRECT_URL = '/user_image/authentication'
 
 # Application definition
 

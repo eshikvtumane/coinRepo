@@ -99,7 +99,7 @@ class UserInfo(View):
         args['email'] = request.user.email
         return render_to_response('user_info.html', RequestContext(request, args))
 
-# save information about user
+# save information about user_image
     @method_decorator(login_required)
     def post(self, request):
         form = UserProfileForm()

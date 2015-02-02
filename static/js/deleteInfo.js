@@ -3,7 +3,7 @@ function deleteSeries(elem){
         console.log(elem.parentNode.rowIndex);
         $.ajax({
             type: 'POST',
-            url:'/user/series/delete/',
+            url:'/user_image/series/delete/',
             data:{
                 's_id': series_id
             },

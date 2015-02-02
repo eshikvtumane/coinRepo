@@ -71,11 +71,11 @@ window.CodeMirror = (function() {
     var mode, doc = new BranchChunk([new LeafChunk([new Line("")])]), frontier = 0, focused;
     loadMode();
     // The selection. These are always maintained to point at valid
-    // positions. Inverted is used to remember that the user is
+    // positions. Inverted is used to remember that the user_image is
     // selecting bottom-to-top.
     var sel = {from: {line: 0, ch: 0}, to: {line: 0, ch: 0}, inverted: false};
     // Selection-related flags. shiftSelecting obviously tracks
-    // whether the user is holding shift.
+    // whether the user_image is holding shift.
     var shiftSelecting, lastClick, lastDoubleClick, lastScrollTop = 0, draggingText,
         overwrite = false, suppressEdits = false, pasteIncoming = false;
     // Variables used by startOperation/endOperation to track what
@@ -1783,7 +1783,7 @@ window.CodeMirror = (function() {
         if (ie_lt9) scrollbar.scrollTop = scrollPos;
         slowPoll();
 
-        // Try to detect the user choosing select-all 
+        // Try to detect the user_image choosing select-all
         if (input.selectionStart != null) {
           clearTimeout(detectingSelectAll);
           var extval = input.value = " " + (posEq(sel.from, sel.to) ? "" : input.value), i = 0;

@@ -31,7 +31,7 @@ class RegisterForm(UserCreationForm):
     }
 
     # Check email for unique
-    # http://stackoverflow.com/questions/5773970/django-auth-user-with-unique-email
+    # http://stackoverflow.com/questions/5773970/django-auth-user_image-with-unique-email
     def clean_email(self):
         data = self.cleaned_data['email']
 
@@ -55,8 +55,8 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['user', 'first_name', 'last_name', 'middle_name', 'avatar']
-        exclude = ('user',)
+        fields = ['user_image', 'first_name', 'last_name', 'middle_name', 'avatar']
+        exclude = ('user_image',)
 
 class CustomUserForm(forms.Form):
     email = forms.EmailField(label='Email', required=False,

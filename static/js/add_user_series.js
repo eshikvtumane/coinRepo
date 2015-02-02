@@ -9,7 +9,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: 'POST',
-            url: '/user/ajax/add/series/',
+            url: '/user_image/ajax/add/series/',
             data: {
                 'series_id':series_id,
                 'country_id':country_id
@@ -53,7 +53,7 @@ function deleteSeries(elem){
 
         $.ajax({
             type: 'POST',
-            url:'/user/series/delete/',
+            url:'/user_image/series/delete/',
             data:{
                 's_id': series_id
             },

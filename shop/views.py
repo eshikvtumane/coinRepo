@@ -61,6 +61,7 @@ class CreateLot(View):
         print '='*40
         photos = json.loads(request.POST['photo'])
         print photos
+
     # Создание лота продавца
         lot_create = ShopItem(user=user,quantity_lots=q_lots, description=desc)
         lot_create.save()
@@ -72,13 +73,14 @@ class CreateLot(View):
         photo = []
         for p in photos:
             path = self.save_file(p)
-            photo.append([ImageCoin(item=lot_create, image=path)])
+            photo.append(ImageCoin(item=lot_create, image=path))
+            print "ok so far"
         ImageCoin.objects.bulk_create(photo)
         return HttpResponse('200', 'text/plain')
 
     def save_file(self, file, path = 'user_image'):
-        filename = file._get_name()
-        image = '%s/%s' % (settings.MEDIA_ROOT, str(path) + str(filename))
+        filename = file["name"]
+        image = '%s%s/%s' % (settings.MEDIA_ROOT, str(path) , str(filename))
         fd = open(image, 'wb')
         for chunk in file.chunks():
             fd.write(chunk)

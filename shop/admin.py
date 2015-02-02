@@ -14,7 +14,7 @@ class ShopItemAdmin(admin.ModelAdmin):
         CoinToShopAdmin,
         ImageCoinAdmin,
     )
-    fields = ['user', 'quantity_lots', 'description']
+    fields = ['user_image', 'quantity_lots', 'description']
 
 admin.site.register(ShopItem, ShopItemAdmin)
 #admin.site.register(CoinToShop, CoinToShopAdmin)
