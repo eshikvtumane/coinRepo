@@ -12,8 +12,9 @@ from django.template import RequestContext
 import json
 from django.core import serializers
 
-from django.core.files import File
 from django.conf import settings
+import os
+import datetime
 
 
 # Create your views here.
@@ -58,9 +59,10 @@ class CreateLot(View):
         desc = request.POST.get('desc')
         items = json.loads(request.POST.get('items'))
 
+        photos = json.loads(request.POST.get('file'))
         print '='*40
-        photos = json.loads(request.POST['photo'])
-        print photos
+        print request.FILES
+        print '='*40
 
     # Создание лота продавца
         lot_create = ShopItem(user=user,quantity_lots=q_lots, description=desc)
@@ -69,23 +71,57 @@ class CreateLot(View):
         coins_sale = [CoinToShop(item=lot_create, coin=Coins.objects.get(pk=i['id']), quantity=i['quantity'], price=i['pay']) for i in items]
         CoinToShop.objects.bulk_create(coins_sale)
     # Добавление фотографий монет продавца
-        #file_content = SimpleUploadedFile('%s'%)
-        photo = []
-        for p in photos:
-            path = self.save_file(p)
-            photo.append(ImageCoin(item=lot_create, image=path))
-            print "ok so far"
-        ImageCoin.objects.bulk_create(photo)
+        fuv = FileUploadView()
+        img_obj = fuv.add_image(request, 'user_image', 'coinson', lot_create)
+
+        '''if request.FILES and request.FILES.get('file'):
+            paths = self.save_file('user_image',
+                             request.FILES.getlist('file'),
+                             'coinson')'''
+        ImageCoin.objects.bulk_create(img_obj)
         return HttpResponse('200', 'text/plain')
 
-    def save_file(self, file, path = 'user_image'):
-        filename = file["name"]
-        image = '%s%s/%s' % (settings.MEDIA_ROOT, str(path) , str(filename))
-        fd = open(image, 'wb')
-        for chunk in file.chunks():
-            fd.write(chunk)
-        fd.close()
-        return image
+    '''def save_file(self, dest_path, files, filename):
+        filename_arr = []
+        for f in files:
+            original_name, file_extension = os.path.splitext(f.name)
+            filename = filename + '-' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + file_extension
+            url = '/' + dest_path + '/' + filename
+            path = settings.MEDIA_ROOT + url
+            with open(path, 'wb+') as destination:
+                for chunk in f.chunks():
+                    destination.write(chunk)
+
+            filename_arr.append(path)
+        return filename_arr'''
+
+
+# загрузка файлов
+class FileUploadView():
+    def add_image(self, request, UPLOAD_TO, FILENAME, LOT_ID):
+        print request.FILES
+        if request.FILES and request.FILES.get('file'):
+            return self.__save_file(UPLOAD_TO,
+                             request.FILES.getlist('file'),
+                             FILENAME,
+                             LOT_ID)
+
+
+        return []
+
+    def __save_file(self, dest_path, files, filename, lot_item):
+        imagecoin_obj = []
+        for f in files:
+            original_name, file_extension = os.path.splitext(f.name)
+            filename = filename + '-' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + file_extension
+            url = dest_path + '/' + filename
+            path = settings.MEDIA_ROOT + url
+            with open(path, 'wb+') as destination:
+                for chunk in f.chunks():
+                    destination.write(chunk)
+
+            imagecoin_obj.append(ImageCoin(item = lot_item, image=path))
+        return imagecoin_obj
 
 
 class SearchCoinsView(View):
@@ -96,6 +132,8 @@ class SearchCoinsView(View):
         data = serializers.serialize('json', coins)
         json_coins = json.dumps(data)
         return HttpResponse(json_coins, content_type='application/json')
+
+
 
 
 # работа с адресом для доставки
@@ -138,3 +176,5 @@ class DeliveryAddressView(View):
         args = {}
         args['address'] = BuyerAddress.objects.filter(buyer = user)
         return args
+
+

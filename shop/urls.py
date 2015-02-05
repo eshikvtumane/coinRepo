@@ -12,6 +12,6 @@ urlpatterns = patterns('',
     url(r'^delivery_address/$', DeliveryAddressView.as_view()),
 
     # ajax
-    url(r'coin_search/', SearchCoinsView.as_view()),
+    url(r'coin_search/$', SearchCoinsView.as_view()),
 
 )
