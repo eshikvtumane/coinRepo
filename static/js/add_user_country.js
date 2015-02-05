@@ -6,7 +6,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: 'POST',
-            url: '/user_image/ajax/add/country/',
+            url: '/user/ajax/add/country/',
             data: { 'country_id':country_id },
             dataType: 'json',
             success: function(data){

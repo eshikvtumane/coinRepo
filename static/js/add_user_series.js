@@ -9,7 +9,7 @@ $(document).ready(function(){
 
         $.ajax({
             type: 'POST',
-            url: '/user_image/ajax/add/series/',
+            url: '/user/ajax/add/series/',
             data: {
                 'series_id':series_id,
                 'country_id':country_id

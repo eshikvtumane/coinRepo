@@ -30,7 +30,7 @@ $(document).ready(function(){
         json = JSON.stringify(coins)
         $.ajax({
             type: 'POST',
-            url: '/user_image/ajax/add/coins/',
+            url: '/user/ajax/add/coins/',
             data: {
                 'coins': json,
                 'id': parseInt($('#series_id').html())
@@ -80,7 +80,7 @@ function deleteCountry(elem){
         console.log(coin_id);
         $.ajax({
             type: 'POST',
-            url:'/user_image/coin/delete/',
+            url:'/user/coin/delete/',
             data:{
                 'c_id': coin_id
             },

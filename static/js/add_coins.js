@@ -10,7 +10,7 @@ function deleteCoinInfo(elem){
 
         $.ajax({
             type: 'POST',
-            url:'/user_image/coininfo/change/',
+            url:'/user/coininfo/change/',
             data:{
                 'c_id': coin_id
             },
@@ -40,7 +40,7 @@ function deleteCoinInfo(elem){
 
         $.ajax({
             type: 'GET',
-            url: '/user_image/coininfo/change/',
+            url: '/user/coininfo/change/',
             data:{
                 'quantity': quantity,
                 'coin': coin
