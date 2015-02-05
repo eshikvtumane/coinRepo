@@ -28,13 +28,15 @@ class CoinToShop(models.Model):
     quantity = models.IntegerField()
     price = models.FloatField()
 
+
+
 # фото монет пользователей
 class ImageCoin(models.Model):
     class Meta:
         db_table = 'ImageCoins'
 
     item = models.ForeignKey('ShopItem')
-    image = models.ImageField(upload_to='user_image')
+    image = models.FileField(upload_to='user_image')
 
 
 # реквизиты продавца

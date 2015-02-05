@@ -8,13 +8,15 @@
 {% block scripts %}
     <script type="text/javascript" src="{% static 'custom/csrf_ajax.js' %}"></script>
     <script type="text/javascript" src="{% static 'custom/search_coins_lots.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/lot/upload.js' %}"></script>
+
     <script type="text/javascript" src="{% static 'js/add_lots.js' %}"></script>
 {% endblock %}
 
 {% block content %}
     <div class="container" style="padding-top: 2ex;">
         <h1>Создание нового лота</h1>
-        <form action="get">
+
 
             <div class="col-sm-12" style="padding-top: 2ex;">
                 <h3>Шаг 1: Добавление монет в лот</h3>
@@ -76,7 +78,9 @@
                 <hr>
                 <h3>Шаг 2: Добавление пользовательских фотографий монет</h3>
                 <label>Добавить фотографии</label>
-                <input type="file" name="photo" id="photo" multiple accept="image/*" class="form-control">
+                <form id="upload_photo" action="get" enctype="multipart/form-data">
+                    <input type="file" name="photo" id="photo" multiple accept="image/*" class="form-control">
+                </form>
             </div>
 
             <div style="padding-top: 2ex;">
@@ -88,10 +92,12 @@
             </div>
 
             <div class="span7 text-center" style="padding-top:3ex;">
+                <div id="success" class="alert alert-success" style="display: none;"><label>Лот успешно добавлен</label></div>
+                <div id="error" class="alert alert-danger"  style="display: none;"><label>Произошла ошибка при добавлении лота</label></div>
                 <input type="button" id="publish" value="Опубликовать" class="btn btn-success">
             </div>
 
-        </form>
 
+<div id="test"></div>
     </div>
 {% endblock %}
