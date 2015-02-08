@@ -71,6 +71,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 GRAPPELLI_ADMIN_TITLE = u'Монеты НА! - Административная панель'
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
