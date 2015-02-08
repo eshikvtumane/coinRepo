@@ -1,8 +1,6 @@
 $(document).ready(function(){
 
     $('#btnAdd').click(function(){
-        console.log($('#series').val());
-        console.log('1');
         series_id = $('#series').val();
         series_name = $('#series option:selected').text();
         country_id = $('#id').html();

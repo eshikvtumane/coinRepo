@@ -467,22 +467,19 @@ class GenerateXlsView(View):
 
 
 class PasswordReset(View):
-
-
     def get(self,request):
         args = {}
         args.update(csrf(request))
         return render_to_response('password_reset.html', RequestContext(request, args))
 
     def post(self,request):
-        args = {}
-        args.update(csrf(request))
+        print("dsadsds")
         current_password = request.POST["current_password"]
         new_password = request.POST["new_password"]
+
         if request.user.check_password(current_password):
             request.user.set_password(new_password)
             request.user.save()
-            print("Password saved!")
+            return HttpResponse('1', content_type='plain/text')
         else:
-            print("Current password is incorrect")
-        return render_to_response('password_reset.html', RequestContext(request, args))
+            return HttpResponse('0', content_type='plain/text')
