@@ -1,4 +1,5 @@
  {% load staticfiles %}
+ {% load inbox %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -45,6 +46,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
+                    <li><a href="/messages/inbox"><span style="font-size: 20px" class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{ messages_inbox_count }}</a></li>
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="dropdown-toggle">Здравствуйте, {{user.username}}! <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -74,7 +76,11 @@
     <div class="container">
 
       <div class="starter-template">
-      {% block content %}
+      {% block sidebar %}
+      {% endblock %}
+
+          {% block content %}
+
       {% endblock %}
       </div>
 

@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^search/', include('haystack.urls')),
+    (r'^messages/', include('django_messages.urls')),
 )
 
 #http://stackoverflow.com/questions/16196603/images-from-imagefield-in-django-dont-load-in-template

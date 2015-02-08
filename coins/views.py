@@ -28,9 +28,6 @@ from  django.contrib.auth.decorators import login_required
 
 #
 # Create your views here.
-def index(request):
-    return render_to_response(request,'coins/home.html')
-
 
 '''def ajax(request):
      country = request.GET["country"]
