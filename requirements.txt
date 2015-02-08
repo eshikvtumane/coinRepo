@@ -6,4 +6,5 @@ django-haystack
 gunicorn
 django-grappelli
 xlwt
-chartit
+django-chartit
+django_messages

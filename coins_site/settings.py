@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'haystack',
     'django.contrib.humanize',
     'chartit',
+    'django_messages',
     #'django_ajax',
     # applications
     'main',
@@ -80,6 +81,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+    'django_messages.context_processors.inbox'
 )
 
 HAYSTACK_CONNECTIONS = {

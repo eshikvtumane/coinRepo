@@ -463,3 +463,23 @@ class GenerateXlsView(View):
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename=%s.xls' % name_file
         return response
+
+
+
+class PasswordReset(View):
+    def get(self,request):
+        args = {}
+        args.update(csrf(request))
+        return render_to_response('password_reset.html', RequestContext(request, args))
+
+    def post(self,request):
+        print("dsadsds")
+        current_password = request.POST["current_password"]
+        new_password = request.POST["new_password"]
+
+        if request.user.check_password(current_password):
+            request.user.set_password(new_password)
+            request.user.save()
+            return HttpResponse('1', content_type='plain/text')
+        else:
+            return HttpResponse('0', content_type='plain/text')
