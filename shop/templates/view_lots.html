@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
 
-</body>
-</html>
+{% block title %}
+    Монеты на! - Продажа монет
+{% endblock %}
+
+{% block content %}
+<h1>Интернет-площадка для продажи монет</h1>
+    <hr>
+    {% for lot in lots %}
+
+        <div class="container thumbnail " style="padding-bottom: 2ex; background-color:#F0F0F0;">
+            <i><h4><b>Лот № {{ lot.id }}</b></h4></i>
+            username: {{ lot.user__username}}
+
+            <div class="col-sm-8">
+                {% for item in items %}
+                    {{ value }}
+                    {% if lot.id == item.item %}
+                        <div style="font-size: 3ex; margin-top: 2ex;">
+                            <div>
+                                <div class="col-sm-4" style="height: 8ex;">
+                                    <a href="#" class="thumbnail">
+                                        <img style="height: 5ex;" src="{{ item.coin__photo_reverse }}">
+                                    </a>
+                                </div>
+
+                                {{ item.coin__rate }} {{ item.coin__denominal }} <a target="_blank" href="/coins/catalog/city/{{ item.coin__country__id }}/{{ item.coin__id }}">{{ item.coin__coin_name }}</a>
+                                <br/>
+                                <label>Количество:</label> {{ item.quantity }} шт.
+                            </div>
+                        </div>
+                        <hr>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+            <div style="font-size: 6ex;" class=" col-sm-4">
+                <label>Общая сумма</label>
+                <div class="alert alert-success" align="center">
+                    ₽ {{ lot.total_sum|intcomma }}
+                </div>
+                <a href=""></a>
+            </div>
+
+            <div class="col-sm-12">
+                <a href="view/{{ lot.id }}" class="btn btn-primary">Посмотреть лот</a>
+                <a href="trash/{{ lot.id }}" class="btn btn-primary">Добавить в корзину</a>
+                <a href="pay/{{ lot.id }}" class="btn btn-primary">Купить</a>
+            </div>
+
+        </div>
+
+
+        <hr>
+    {% endfor %}
+{% endblock %}

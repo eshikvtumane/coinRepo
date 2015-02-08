@@ -17,6 +17,7 @@ class ShopItem(models.Model):
     user = models.ForeignKey(User)
     quantity_lots = models.IntegerField()
     description = models.TextField()
+    total_sum = models.FloatField(blank=True)
 
 # товары в предложениях продавцов
 class CoinToShop(models.Model):

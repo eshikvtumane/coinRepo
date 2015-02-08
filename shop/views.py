@@ -59,41 +59,26 @@ class CreateLot(View):
         desc = request.POST.get('desc')
         items = json.loads(request.POST.get('items'))
 
-        photos = json.loads(request.POST.get('file'))
-        print '='*40
-        print request.FILES
-        print '='*40
-
     # Создание лота продавца
-        lot_create = ShopItem(user=user,quantity_lots=q_lots, description=desc)
+        lot_create = ShopItem(user=user,quantity_lots=q_lots, description=desc, total_sum=0)
         lot_create.save()
     # Добавление монет в лот
-        coins_sale = [CoinToShop(item=lot_create, coin=Coins.objects.get(pk=i['id']), quantity=i['quantity'], price=i['pay']) for i in items]
+        total_sum = 0
+        coins_sale = []
+        for i in items:
+            coins_sale.append(CoinToShop(item=lot_create, coin=Coins.objects.get(pk=i['id']), quantity=i['quantity'], price=i['pay']))
+            total_sum += int(i['pay'])
+
+        lot_create.total_sum = total_sum
+        lot_create.save()
+
         CoinToShop.objects.bulk_create(coins_sale)
     # Добавление фотографий монет продавца
         fuv = FileUploadView()
         img_obj = fuv.add_image(request, 'user_image', 'coinson', lot_create)
 
-        '''if request.FILES and request.FILES.get('file'):
-            paths = self.save_file('user_image',
-                             request.FILES.getlist('file'),
-                             'coinson')'''
         ImageCoin.objects.bulk_create(img_obj)
         return HttpResponse('200', 'text/plain')
-
-    '''def save_file(self, dest_path, files, filename):
-        filename_arr = []
-        for f in files:
-            original_name, file_extension = os.path.splitext(f.name)
-            filename = filename + '-' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + file_extension
-            url = '/' + dest_path + '/' + filename
-            path = settings.MEDIA_ROOT + url
-            with open(path, 'wb+') as destination:
-                for chunk in f.chunks():
-                    destination.write(chunk)
-
-            filename_arr.append(path)
-        return filename_arr'''
 
 
 # загрузка файлов
@@ -134,7 +119,15 @@ class SearchCoinsView(View):
         return HttpResponse(json_coins, content_type='application/json')
 
 
+class LotsView(View):
+    html = 'view_lots.html'
+    def get(self, request):
+        args = {}
 
+        args['lots'] = ShopItem.objects.filter().values('id', 'user__username', 'quantity_lots', 'description', 'total_sum')
+        args['items'] = CoinToShop.objects.all().values('item', 'quantity', 'price', 'coin__photo_reverse', 'coin__coin_name', 'coin__country__id', 'coin__id', 'coin__denominal', 'coin__rate')
+        #args['lots'] = CoinToShop.objects.all()
+        return render_to_response(self.html, RequestContext(request, args))
 
 # работа с адресом для доставки
 class DeliveryAddressView(View):

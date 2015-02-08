@@ -1,8 +1,9 @@
 $(document).ready(function(){
     $('#publish').click(function(){
+
+
         q_lots = $('#quantity_lots').val();
         desc = $('#description').val();
-        console.log('1');
 
         table = document.getElementById('tbl_add_coins');
 
@@ -11,10 +12,22 @@ $(document).ready(function(){
             id = table.rows[i].id;
             quantity = $('#quantity-' + id).val();
             pay = $('#pay-' + id).val();
-            items.push({'id': id, 'quantity': quantity, 'pay': pay});
-
+            if(!isNaN(parseInt(id)) && !isNaN(parseInt(quantity)) && !isNaN(parseInt(pay))){
+                items.push({'id': id, 'quantity': quantity, 'pay': pay});
+            }
+            else{
+                infoPopup('#error');
+                return;
+            }
+console.log('11111');
         }
-
+console.log('22222');
+        // validate date
+        if(q_lots == '' || desc == '' || items.length == 0){
+            infoPopup('#error');
+            return;
+        }
+console.log('33333');
         photo = document.getElementById('photo').files[0]
         console.log(photo);
         photo_arr = Array();
@@ -25,7 +38,9 @@ $(document).ready(function(){
         formData.append('desc', desc);
         formData.append('items', JSON.stringify(items));
 
+// add photo
         field = document.getElementById('photo');
+        console.log(field.files.length);
         if (field.files.length != 0) {
             for(var i = 0; i < field.files.length; i++){
                 formData.append('file', field.files[i]);
@@ -34,9 +49,6 @@ $(document).ready(function(){
 
         console.log(formData);
 
-        for(var i = 0, f; f = photo[i]; i++){
-            photo_arr.push(f);
-        }
 
         $.ajax({
             type: 'POST',
@@ -61,3 +73,4 @@ $(document).ready(function(){
         $(id).delay(100).fadeIn();
         $(id).delay(2000).fadeOut(1000);
     }
+
