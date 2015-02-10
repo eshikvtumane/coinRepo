@@ -55,8 +55,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['user_image', 'first_name', 'last_name', 'middle_name', 'avatar']
-        exclude = ('user_image',)
+        fields = ['first_name', 'last_name', 'middle_name', 'avatar']
 
 class CustomUserForm(forms.Form):
     email = forms.EmailField(label='Email', required=False,
