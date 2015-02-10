@@ -51,7 +51,7 @@ $(document).ready(function(){
         console.log(country_id);
         $.ajax({
             type: 'POST',
-            url:'/user_image/country/delete/',
+            url:'/user/country/delete/',
             data:{
                 'c_id': country_id
             },
