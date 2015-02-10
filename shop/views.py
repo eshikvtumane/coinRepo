@@ -119,6 +119,7 @@ class SearchCoinsView(View):
         return HttpResponse(json_coins, content_type='application/json')
 
 
+# Вывод лотов
 class LotsView(View):
     html = 'view_lots.html'
     def get(self, request):
@@ -127,6 +128,19 @@ class LotsView(View):
         args['lots'] = ShopItem.objects.filter().values('id', 'user__username', 'quantity_lots', 'description', 'total_sum')
         args['items'] = CoinToShop.objects.all().values('item', 'quantity', 'price', 'coin__photo_reverse', 'coin__coin_name', 'coin__country__id', 'coin__id', 'coin__denominal', 'coin__rate')
         #args['lots'] = CoinToShop.objects.all()
+        return render_to_response(self.html, RequestContext(request, args))
+
+# Просмотр информации о лоте
+class LotInfoView(View):
+    html = 'shop/view_lot.html'
+    def get(self, request, lot_id):
+        args = {}
+        print 'ID', lot_id
+        args['shop_item'] = ShopItem.objects.filter(id=lot_id).values('id', 'user__username', 'quantity_lots', 'description', 'total_sum')
+
+        shop = ShopItem.objects.get(id=lot_id)
+        args['item_lots'] = CoinToShop.objects.filter(item = shop).values('quantity', 'price', 'coin__photo_reverse', 'coin__coin_name', 'coin__country__id', 'coin__id', 'coin__denominal', 'coin__rate')
+
         return render_to_response(self.html, RequestContext(request, args))
 
 # работа с адресом для доставки
