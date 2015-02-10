@@ -91,11 +91,11 @@ class UserInfo(View):
                 'avatar': current_user.avatar
             }
             args['form'] = UserProfileForm(data)
-            args['url_image'] = current_user.avatar
+            args['image_url'] = current_user.avatar
         except:
-            args['form'] = UserProfileForm()
+            args['form'] = UserProfileForm(empty_permitted=True)
 
-        args['user_form'] = CustomUserForm()
+        args['user_form'] = CustomUserForm(empty_permitted=True)
         args['email'] = request.user.email
         return render_to_response('user_info.html', RequestContext(request, args))
 
@@ -120,16 +120,16 @@ class UserInfo(View):
             form = UserProfileForm(request.POST)
 
         if form.is_valid():
-            user = form.save(commit=False)
-            user.user = request.user
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
 
             # обновляем email
             User.objects.filter(pk=request.user.id).update(email=email)
             # добавляем/обновляем пользовательские данные
-            user.save()
-            return render_to_response('user_info.html', RequestContext(request, {'form':form, 'url_image':user.avatar, 'success':True, 'user_form':CustomUserForm(), 'email': email}))
+            user_profile.save()
+            return render_to_response('user_info.html', RequestContext(request, {'form':form,'image_url':user_profile.avatar, 'success':True, 'user_form':CustomUserForm(), 'email': email}))
         else:
-            return render_to_response('user_info.html', RequestContext(request, {'form':form, 'url_image':request.user.avatar, 'error':True,'user_form':CustomUserForm(), 'email': email}))
+            return render_to_response('user_info.html', RequestContext(request, {'form':form, 'image_url':user_profile.avatar, 'error':True,'user_form':CustomUserForm(), 'email': email}))
 
 
 class UserCountryView(View):

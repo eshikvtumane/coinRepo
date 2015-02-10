@@ -14,10 +14,10 @@ class Profile(models.Model):
         verbose_name_plural = 'Профиль'
 
     user = models.OneToOneField(User)
-    first_name = models.CharField(verbose_name='Фамилия',max_length='100') # verbose_name=_(u'Фамилия'),
-    last_name = models.CharField(verbose_name='Имя',max_length='100') # verbose_name=_(u'Имя'),
+    first_name = models.CharField(verbose_name='Имя',max_length='100',null=True,blank=True) # verbose_name=_(u'Фамилия'),
+    last_name = models.CharField(verbose_name='Фамилия',max_length='100',null=True,blank=True) # verbose_name=_(u'Имя'),
     middle_name = models.CharField(verbose_name='Отчество',null=True, blank=True, max_length='255') # verbose_name=_(u'Отчество'),
-    avatar = models.ImageField(upload_to=settings.MEDIA_URL_AVATAR, default=path.join(settings.MEDIA_URL_AVATAR, 'default.jpg'), null=True, editable=True, verbose_name='Фото') #, verbose_name=_(u'Фото')
+    avatar = models.ImageField(upload_to=settings.MEDIA_URL_AVATAR, default=path.join(settings.MEDIA_URL_AVATAR, 'default.jpg'), null=True,blank=True, editable=True, verbose_name='Фото') #, verbose_name=_(u'Фото')
 
     def __unicode__(self):
         return unicode(self.user)
